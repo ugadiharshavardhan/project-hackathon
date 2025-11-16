@@ -1,11 +1,15 @@
 import React from "react";
-import { FaCalendarAlt, FaUsers, FaTrophy, FaChartLine } from "react-icons/fa";
+import { FaCalendarAlt, FaUsers, FaTrophy, FaChartLine, FaHome } from "react-icons/fa";
 import { useNavigate } from "react-router";
 
 export default function UserOverView() {
     const navigate = useNavigate();
     const handleAllEvents = () => {
         navigate("/user/allevents",{replace:true})
+    }
+
+    const handleReturnHome = () => {
+      navigate("/",{replace:true})
     }
   return (
     <div className="bg-[#0a0a12] text-white min-h-screen flex flex-col items-center justify-center px-6 pt-15">
@@ -37,6 +41,12 @@ export default function UserOverView() {
       <div className="flex gap-4 mt-8">
         <button onClick={handleAllEvents} className="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-3 rounded-md text-white font-semibold hover:opacity-90 transition">
           See All Events →
+        </button>
+        <button onClick={handleReturnHome} className="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-3 rounded-md text-white font-semibold hover:opacity-90 transition">
+          <div className="flex">
+            <FaHome size={26} className="pr-2" /> 
+            <span>Back to Home</span> 
+          </div>
         </button>
       </div>
 

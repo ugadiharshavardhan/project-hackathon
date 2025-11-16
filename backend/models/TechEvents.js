@@ -11,9 +11,11 @@ const TechEventsFormat = {
     City: { type: String, required: true },
     State: { type: String, required: true },
     Venue: { type: String, required: true },
+    Slots:{type:Number,required:true},
     StartDate: { type: Date, required: true },
     EndDate: { type: Date, required: true },
     SpecifiedStacks: { type: String, required: true },
+    FormLink:{type:String,required:false},
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: "admindetails",

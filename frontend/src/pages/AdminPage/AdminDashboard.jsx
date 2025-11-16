@@ -66,7 +66,7 @@ const AdminDashboard = () => {
           </select>
         </div>
       </div>
-
+    
       {form.open ? (
         <Form event={form.event} isopen={form.open} />
       ) : (

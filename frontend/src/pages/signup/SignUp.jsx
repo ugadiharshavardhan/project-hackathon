@@ -79,7 +79,7 @@ export default function SignUp() {
           <img
             src="https://res.cloudinary.com/dcttatiuj/image/upload/v1758623710/Gemini_Generated_Image_xbel9lxbel9lxbel_uizbkz.png"  
             alt="Movies Logo"
-            className="h-30 shadow:lg sm:h-12 w-auto"
+            className="h-30 shadow-lg sm:h-12 w-auto"
           />
         </header>
 
@@ -139,7 +139,7 @@ export default function SignUp() {
               Create Account
             </button>
           </form>
-          <p className="text-white pt-5">Already have an Account ? <Link to={"/login"} className="underline">login</Link></p>
+          <p className="text-white pt-5">Already have an Account ? <Link to={"/signin"} className="underline">login</Link></p>
         </div>
       </div>
     );

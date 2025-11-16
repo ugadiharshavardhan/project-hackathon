@@ -19,7 +19,7 @@ const SignIn = () => {
     }
 
     const onSubmitSuccess = (jwtToken) => {
-      Cookies.set("jwt_token",jwtToken,{expires:1})
+      Cookies.set("jwt_token",jwtToken,{expires:7})
       setIsErr(false)
       navigate("/user",{replace:true})
     }

@@ -8,10 +8,13 @@ import {
 } from "react-icons/fa";
 import { LuClock3 } from "react-icons/lu";
 import Cookies from "js-cookie"
+// import EachEventDetails from "./EachEventDetails";
+import { useNavigate } from "react-router";
 
 function AllEventsPage({searchQuery,eventType,organizer,stack}) {
   const [TotalEvents, setTotalEvents] = useState([]);
   const token = Cookies.get("jwt_token")
+  const navigate = useNavigate()
 
   useEffect(() => {
     const allEventsData = async () => {
@@ -74,28 +77,29 @@ function AllEventsPage({searchQuery,eventType,organizer,stack}) {
   }
   
   const remainingDays = (dateString) => {
-    const date = new Date(dateString)
-    const day1 = String(date.getDate()).padStart(2, "0");
-    const todayDate = new Date()
-    const day2 = String(todayDate.getDate()).padStart(2, "0");
-    if (Number(day1)>Number(day2)) {
-      const remaining = day1-day2;
-      if (remaining==0) {
-        return "Today"
-      }
-      else {
-        return remaining+" days left"
-      }
+    const date = new Date(dateString);
+    const todayDate = new Date();
+
+    // Remove time part (set both to midnight for accurate day difference)
+    date.setHours(0, 0, 0, 0);
+    todayDate.setHours(0, 0, 0, 0);
+
+    const remaining = (date - todayDate);
+    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+    if (days==0) {
+      return "Today"
+    }
+    else if (days<0) {
+      return "Expired"
     }
     else {
-      const remaining = day2-day1;
-      if (remaining==0) {
-        return "Today"
-      }
-      else {
-        return remaining+" days left"
-      }
+      return `${days} Days Left`;
     }
+
+  };
+
+  const handleViewDetails = (eventid) => {
+    navigate(`/user/allevents/${eventid}`)
   }
 
   return (
@@ -155,6 +159,11 @@ function AllEventsPage({searchQuery,eventType,organizer,stack}) {
                   ₹ {each.PricePool} in prizes
                 </span>
               </div>
+              <div className="flex items-center gap-2">
+                <FaUserAlt className="text-gray-400" />
+                <span>Slots: {each.Slots}</span>
+              </div>
+              
             </div>
 
             {/* Tags */}
@@ -175,7 +184,9 @@ function AllEventsPage({searchQuery,eventType,organizer,stack}) {
                 <LuClock3 className="mr-1" />
                 <span>{`- ${remainingDays(each.StartDate)}`}</span>
               </div>
-              <button className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white text-sm px-4 py-2 rounded-md transition">
+              <button onClick={(e)=> {
+                e.preventDefault()
+                handleViewDetails((each._id))}} className="flex  cursor-pointer items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white text-sm px-4 py-2 rounded-md transition">
                 View Details <FaExternalLinkAlt size={12} />
               </button>
             </div>

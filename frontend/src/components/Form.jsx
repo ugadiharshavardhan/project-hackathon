@@ -7,6 +7,7 @@ const Form = ({ event }) => {
   const { form, setForm } = useContext(FormContext);
   const id = event?._id || form?.id;
   const token = Cookies.get("admin_token")
+  console.log(token)
 
   const [formData, setFormData] = useState({
     EventTitle: event?.EventTitle || "",
@@ -19,6 +20,7 @@ const Form = ({ event }) => {
       false,
     PricePool: event?.PricePool || "",
     OrganisationName: event?.OrganisationName || "",
+    Slots:event?.Slots || "",
     City: event?.City || "",
     State: event?.State || "",
     Venue: event?.Venue || "",
@@ -29,6 +31,7 @@ const Form = ({ event }) => {
       ? new Date(event.EndDate).toISOString().split("T")[0]
       : "",
     SpecifiedStacks: event?.SpecifiedStacks || "",
+    FormLink:event?.FormLink || ""
   });
 
   // handle input change
@@ -48,15 +51,26 @@ const Form = ({ event }) => {
     const url = isUpdating
       ? `http://localhost:5678/events/${id}`
       : "http://localhost:5678/events/post";
+    
+    console.log(url)
+      
     const method = isUpdating ? "PUT" : "POST";
+    console.log(method)
+
+    // Convert Slots to number
+    const dataToSubmit = {
+      ...formData,
+      Slots: Number(formData.Slots)
+    };
 
     const response = await fetch(url, {
       method,
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}` 
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(dataToSubmit),
     });
 
     if (response.ok) {
@@ -79,9 +93,11 @@ const Form = ({ event }) => {
       City: "",
       State: "",
       Venue: "",
+      Slots:"",
       StartDate: "",
       EndDate: "",
       SpecifiedStacks: "",
+      FormLink:""
     });
 
     // Close form modal
@@ -242,6 +258,16 @@ const Form = ({ event }) => {
 
         <div className="flex gap-4">
           <div className="flex flex-col">
+            <label>Slots</label>
+            <input
+              type="text"
+              name="Slots"
+              value={formData.Slots}
+              onChange={handleChange}
+              className="p-2 rounded-md bg-gray-800 border border-gray-700"
+            />
+          </div>
+          <div className="flex flex-col">
             <label>Start Date</label>
             <input
               type="date"
@@ -263,6 +289,7 @@ const Form = ({ event }) => {
           </div>
         </div>
 
+
         <div>
           <label className="block text-sm mb-1">Specified Stacks</label>
           <input
@@ -271,6 +298,17 @@ const Form = ({ event }) => {
             value={formData.SpecifiedStacks}
             onChange={handleChange}
             placeholder="e.g., React, Node.js, AI/ML"
+            className="w-full p-2 rounded-md bg-gray-800 border border-gray-700"
+          />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Application Form Link</label>
+          <input
+            type="text"
+            name="FormLink"
+            value={formData.FormLink}
+            onChange={handleChange}
+            placeholder="Google Application Form link"
             className="w-full p-2 rounded-md bg-gray-800 border border-gray-700"
           />
         </div>

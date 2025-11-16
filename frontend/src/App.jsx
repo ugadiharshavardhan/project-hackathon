@@ -10,9 +10,12 @@ import { CounterProvider } from "./contextApi/TotalCountsContext";
 import { FormProvider } from "./contextApi/FormContext";
 import NotFound from "./pages/ErrorPage/notFound";
 import DisplayAllEvents from "./pages/UserTotalEvents/DisplayAllEvents";
+import ProtectedRoute from "./components/ProtectedRoute";
+import EachEventDetails from "./components/EachEventDetails";
 
 function App() {
   return (
+    
     <CounterProvider>
       <FormProvider>
         <BrowserRouter>
@@ -20,10 +23,11 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/user" element={<UserPage />} />
+            <Route path="/user" element={<ProtectedRoute><UserPage /></ProtectedRoute>} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/user/allevents" element={<DisplayAllEvents />} />
+            <Route path="/user/allevents" element={<ProtectedRoute><DisplayAllEvents /></ProtectedRoute>} />
+            <Route path="/user/allevents/:eventid" element={<ProtectedRoute><EachEventDetails /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

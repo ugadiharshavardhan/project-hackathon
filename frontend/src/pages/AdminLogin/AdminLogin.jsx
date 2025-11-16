@@ -12,7 +12,7 @@ function AdminLogin() {
 
 
   const onSuccessData = (adminToken) =>{ 
-    Cookies.set("admin_token",adminToken,{expires:1})
+    Cookies.set("admin_token",adminToken,{expires:7})
     setIsErr(false)
     navigate("/admin/dashboard",{replace:true})
 
