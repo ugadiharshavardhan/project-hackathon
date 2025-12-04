@@ -9,7 +9,9 @@ import cors from "cors";
 import { userModel } from "./models/userModels.js";
 import { AdminModel } from "./models/adminModel.js";
 import { TechEventsModel } from "./models/TechEvents.js";
-import { verifyAdmin } from "./authorizeAdmin.js";
+import { verifyAdmin } from "./middleware/authorizeAdmin.js";
+import { AppliedEventModel } from "./models/applyEvent.js";
+import { verifyUserToken } from "./middleware/userAuth.js";
 
 const app = express();
 dotenv.config();
@@ -18,9 +20,10 @@ app.use(express.json());
 app.use(cors({
   origin: ["http://localhost:5173", "http://localhost:5174"],
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "GET is successful" });
@@ -31,7 +34,7 @@ app.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
   const UserRules = z.object({
     username: z.string().min(4).max(15),
-    email: z.string().email(),
+    email: z.email(),
     password: z.string().min(6).max(15)
   });
 
@@ -72,7 +75,7 @@ app.post("/signin", async (req, res) => {
 app.post("/admin/register", async (req, res) => {
   const { email, code } = req.body;
   const AdminRules = z.object({
-    email: z.string().email(),
+    email: z.email(),
     code: z.string()
   });
 
@@ -108,7 +111,7 @@ app.get("/user/allevents/:eventid", async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: "Event Not Found" });
     }
-    res.status(200).json({ message: event });
+    res.status(200).json(event);
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ message: "Server error" });
@@ -121,25 +124,6 @@ app.get("/events/all", async (req, res) => {
     const events = await TechEventsModel.find().populate("createdBy", "email");
     res.status(200).json({ message: "All Events", allevents: events });
   } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// CREATE EVENT
-app.post("/events/post", verifyAdmin, async (req, res) => {
-  try {
-    const newEvent = new TechEventsModel({
-      ...req.body,
-      createdBy: req.adminId
-    });
-
-    await newEvent.save();
-    res.status(200).json({
-      message: "Event Created Successfully",
-      EventDetails: newEvent
-    });
-  } catch (err) {
-    console.log(err)
     res.status(500).json({ message: err.message });
   }
 });
@@ -194,6 +178,154 @@ app.delete("/events/:id", verifyAdmin, async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
+});
+
+
+// CREATE EVENT
+app.post("/events/post", verifyAdmin, async (req, res) => {
+  try {
+    const newEvent = new TechEventsModel({
+      ...req.body,
+      createdBy: req.adminId
+    });
+
+    await newEvent.save();
+    res.status(200).json({
+      message: "Event Created Successfully",
+      EventDetails: newEvent
+    });
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+//get applied events
+app.get("/user/appliedevents",verifyUserToken,async(req,res)=> {
+  try {
+    const userId = req.user._id;
+    const events = await AppliedEventModel.find({user:userId})
+    res.status(200).json({
+      message:"AppliedEvents",
+      events:events
+    })
+  }
+  catch(error) {
+    console.error("Error applying for event:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+})
+
+
+// app.get("/user/appliedevents/:eventId",verifyUserToken,async(req,res)=> {
+//   try {
+//     const eventId = req.params.eventId;
+//     const eventDetail = await AppliedEventModel.findById(eventId)
+//     res.status(200).json({
+//       eventDetails:eventDetail
+//     })
+//   }
+//   catch(error) {
+//     console.error("Error applying for event:", error);
+//     res.status(500).json({ message: "Server Error", error: error.message });
+//   }
+// })
+
+//apply event
+app.post("/event/apply/:eventId", verifyUserToken, async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    const eventTitle = req.body.eventTitle;
+    const eventType = req.body.eventType;
+    const eventCity = req.body.EventCity;
+    const StartDate = req.body.StartDate;
+    const EndDate = req.body.EndDate;
+    const Venue = req.body.Venue;
+    const userId = req.userId;
+
+    if (!userId) {
+        return res.status(401).json({ message: "Unauthorized user" });
+    }
+
+    
+    const event = await TechEventsModel.findById(eventId);
+    if (!event) {
+        return res.status(404).json({ message: "Event not found" });
+    }
+
+    const deadline = new Date(event.StartDate);
+    deadline.setDate(deadline.getDate() - 5);
+
+    if (new Date() >= deadline) {
+        return res.status(400).json({ message: "Registration deadline has passed" });
+    }
+
+    const existingApplication = await AppliedEventModel.findOne({
+        user: userId,
+        event: eventId
+    });
+
+    if (existingApplication) {
+        return res.status(400).json({ message: "You have already applied to this event" });
+    }
+
+    const application = new AppliedEventModel({
+        ...req.body,
+        user: userId,
+        eventTitle:eventTitle,
+        eventType:eventType,
+        Venue:Venue,
+        StartDate :StartDate,
+        EndDate :EndDate,
+        EventCity:eventCity,
+        admin: event.createdBy,
+        event: eventId
+    });
+
+    await application.save();
+
+    return res.status(201).json({
+        message: "Application submitted successfully",
+        applicationId: application._id
+    });
+
+  } catch (error) {
+    console.error("Error applying for event:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+});
+
+
+app.get("/user/account",verifyUserToken,async(req,res)=> {
+  try {
+     const user = await userModel.findOne({ userId: req.user.userId }).select("-password").lean();
+     res.status(200).json({ userDetails: user });
+  }
+  catch(error){ 
+    console.error("Error applying for event:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+})
+
+// Get user's applications
+app.get("/user/applications", async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(" ")[1];
+        if (!token) {
+            return res.status(401).json({ message: "Authentication required" });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const applications = await AppliedEventModel.find({ user: decoded.id })
+            .populate('event', 'EventTitle StartDate EndDate Venue')
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({ applications });
+    } catch (error) {
+        console.error("Error fetching applications:", error);
+        res.status(500).json({ message: "Server error" });
+    }
 });
 
 // DATABASE CONNECTION

@@ -3,6 +3,7 @@ import { FaCalendarAlt, FaMapMarkerAlt, FaTrophy, FaClock } from "react-icons/fa
 import { useParams } from "react-router";
 import { FaArrowLeft } from "react-icons/fa";
 import Cookies from "js-cookie";
+// import { FaRegBookmark } from "react-icons/fa";
 import { useNavigate } from "react-router";
 
 const EachEventDetails = () => {
@@ -12,6 +13,9 @@ const EachEventDetails = () => {
   const [eachData, setEachData] = useState({});
   const [value, setValue] = useState(0);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
+  // const [claName,setClaName] = useState("bg-white text-black")
+  // const [Save,setSave] = useState(true)
+
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
@@ -26,9 +30,8 @@ const EachEventDetails = () => {
         const response = await fetch(url, options);
         if (response.ok) {
           const data = await response.json();
-          const event = data.message;
-          console.log(event)
-          setEachData(event);
+          console.log(data)
+          setEachData(data);
         }
       } catch (err) {
         console.log(err);
@@ -48,6 +51,22 @@ const EachEventDetails = () => {
     }
   }, [eachData]);
 
+
+  const handleApplyNow = () => {
+    navigate(`/events/apply/${eventid}`, {replace: true});
+  }
+
+  // const handleSaveBtn = () => {
+  //   if (claName==="text-blue-500 bg-white") {
+  //     setClaName("text-black bg-white")
+  //     setSave(false)
+  //   }
+  //   else {
+  //     setClaName("text-blue-500 bg-white")
+  //     setSave(true) 
+  //   }
+  // }
+  // console.log(Save)
   // Format date helper
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -87,19 +106,21 @@ const EachEventDetails = () => {
     <div className="min-h-screen bg-[#0b0b0d] text-white p-8 flex flex-col items-center pt-30">
       {/* Header */}
       <div className="w-full max-w-5xl mb-6">
-        <div className="flex items-center gap-2 text-sm mb-1">
-          <span
-            className="pr-5 border border-amber-800 text-center rounded-4xl cursor-pointer hover:bg-amber-900 transition"
-            onClick={handleBackBtn}
-          >
-            <FaArrowLeft size={20} />
-          </span>
-          <span className="bg-emerald-600 text-white px-3 py-1 rounded-full">
-            🎓 {eachData.Organizer} Event
-          </span>
-          <span className="bg-blue-600 text-white px-3 py-1 rounded-full">
-            ✔ Verified
-          </span>
+        <div className="flex justify-between gap-2 text-sm mb-1">
+          <div className="flex">
+            <span
+              className=" border border-white text-bblack text-center p-2 rounded-4xl mr-2 cursor-pointer hover:bg-black transition"
+              onClick={handleBackBtn} 
+            >
+              <FaArrowLeft size={15} />
+            </span>
+            <span className="bg-emerald-600 text-white px-3 py-1 rounded-full">
+              🎓 {eachData.Organizer} Event
+            </span>
+          </div>
+          {/* <span onClick={handleSaveBtn} className={`${claName} px-3 py-1 rounded-full`}>
+            <FaRegBookmark size={20} />
+          </span> */}
         </div>
         <h1 className="text-4xl font-bold mt-2">{eachData.EventTitle}</h1>
         <p className="text-gray-400 pt-1">
@@ -207,8 +228,9 @@ const EachEventDetails = () => {
 
             {/* Conditional Button */}
             {!isRegistrationOpen ? (
-              <div className="w-full bg-gradient-to-r text-center from-blue-600 to-blue-800 text-white py-2 rounded-lg font-semibold hover:opacity-90 transition">
-                <a href={`${eachData.FormLink}`} target="_blank" rel="noopener noreferrer" >Apply Now</a>
+              <div onClick={handleApplyNow} className="w-full bg-gradient-to-r text-center from-blue-600 to-blue-800 text-white py-2 rounded-lg font-semibold hover:opacity-90 transition">
+                {/* <a href={`${eachData.FormLink}`} target="_blank" rel="noopener noreferrer" >Apply Now</a> */}
+                <button>Apply Now</button>
               </div>
             ) : (
               <button className="w-full bg-gradient-to-r from-gray-600 to-gray-800 text-white py-2 rounded-lg font-semibold cursor-not-allowed opacity-70">

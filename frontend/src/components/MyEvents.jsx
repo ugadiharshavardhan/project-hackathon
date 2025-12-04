@@ -112,9 +112,6 @@ function MyEvents({ setForm, dropValue }) {
                       <span className="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full">
                         {each.EventType}
                       </span>
-                      <span className="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full">
-                        Verified
-                      </span>
                     </div>
                     <div className="flex gap-2 text-gray-400">
                       <button
@@ -179,9 +176,6 @@ function MyEvents({ setForm, dropValue }) {
                         </span>
                         <span className="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full">
                           {each.EventType}
-                        </span>
-                        <span className="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full">
-                          Verified
                         </span>
                       </div>
                       <div className="flex gap-2 text-gray-400">

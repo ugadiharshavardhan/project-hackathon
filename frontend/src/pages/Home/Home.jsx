@@ -163,7 +163,7 @@ const Home = () => {
         {/* Buttons */}
         <div className="mt-8 flex gap-4">
           <button onClick={handleUserEvents} className="px-6 py-3 rounded-md bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90 transition cursor-pointer">
-            Explore Events →
+            Student Login →
           </button>
           <button onClick={handleAdminEvents} className="px-6 py-3 rounded-md bg-black border border-gray-700 hover:bg-gray-800 transition cursor-pointer">
             Admin Community

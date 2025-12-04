@@ -23,5 +23,5 @@ const TechEventsFormat = {
     }
 };
 
-const TechEventsSchema = new Schema(TechEventsFormat);
+const TechEventsSchema = new Schema(TechEventsFormat,{ timestamps: true });
 export const TechEventsModel = model("TechEvents", TechEventsSchema);
