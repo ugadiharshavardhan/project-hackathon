@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import Cookies from "js-cookie";
+import React, { useEffect } from 'react'
+import { useState } from 'react';
+import Cookies from "js-cookie"
 import { useParams, useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
-import { motion } from "framer-motion";
-import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 function AppliedEvent() {
     const { eventid } = useParams();
@@ -134,391 +133,215 @@ function AppliedEvent() {
         fetchEvent()
     },[eventid])
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto"
-      >
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Event Registration</h1>
-          <p className="text-lg text-gray-600">Complete your application for {EventDetails.EventTitle || 'the event'}</p>
-        </div>
+    <div className='pt-25 bg-gray-500'>
+      <form onSubmit={handleSubmitApply} >
+        <div className="max-w-3xl mx-auto bg-gray-900 text-white p-8 rounded-lg shadow-lg space-y-8">
+            <h2 className="text-2xl font-semibold mb-4">Hackathon Registration Form</h2>
 
-        <form onSubmit={handleSubmitApply} className="space-y-8">
-          {/* Personal Information */}
-          <motion.div 
-            className="bg-white rounded-2xl shadow-xl overflow-hidden"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="px-8 py-6 bg-gradient-to-r from-blue-600 to-indigo-700">
-              <h2 className="text-2xl font-bold text-white">Personal Information</h2>
-            </div>
-            
-            <div className="p-8 space-y-6">
-              {/* Name */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Full Name (First & Last)*</label>
-                <div className="relative">
-                  <input
+            {/* <label className="block mb-1 font-medium">Event Name</label>
+                <input
+                    type="text"
+                    name="eventname"
+                    value={EventDetails.EventTitle}
+                    onChange={handleDataapply}
+                    placeholder="Event Name"
+                    className={`w-full p-2 rounded bg-gray-800 border border-gray-700`}
+                /> */}
+            {/* Name */}
+            <div>
+                <label className="block mb-1 font-medium">Full Name (First & Last)*</label>
+                <input
                     type="text"
                     name="fullName"
                     value={ApplyFormData.fullName}
                     onChange={handleDataapply}
                     placeholder="John Doe"
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.fullName ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                  />
-                  {errors.fullName ? (
-                    <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                  ) : ApplyFormData.fullName ? (
-                    <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                  ) : null}
-                </div>
+                    className={`w-full p-2 rounded bg-gray-800 border ${errors.fullName ? 'border-red-500' : 'border-gray-700'}`}
+                />
                 {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
-              </div>
+            </div>
 
-              {/* Email + Phone */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Email Address*</label>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      name="email"
-                      value={ApplyFormData.email}
-                      onChange={handleDataapply}
-                      placeholder="john.doe@university.edu"
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                    />
-                    {errors.email ? (
-                      <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                    ) : ApplyFormData.email ? (
-                      <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                    ) : null}
-                  </div>
-                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            {/* Email + Phone */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                <label className="block mb-1 font-medium">Email Address*</label>
+                <input
+                    type="email"
+                    name="email"
+                    value={ApplyFormData.email}
+                    onChange={handleDataapply}
+                    placeholder="john.doe@university.edu"
+                    className={`w-full p-2 rounded bg-gray-800 border ${errors.email ? 'border-red-500' : 'border-gray-700'}`}
+                />
+                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                 </div>
 
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Phone Number*</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="phoneNumber"
-                      value={ApplyFormData.phoneNumber}
-                      onChange={handleDataapply}
-                      placeholder="1234567890"
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.phoneNumber ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                    />
-                    {errors.phoneNumber ? (
-                      <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                    ) : ApplyFormData.phoneNumber ? (
-                      <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                    ) : null}
-                  </div>
-                  {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
+                <div>
+                <label className="block mb-1 font-medium">Phone Number*</label>
+                <input
+                    type="text"
+                    name="phoneNumber"
+                    value={ApplyFormData.phoneNumber}
+                    onChange={handleDataapply}
+                    placeholder="1234567890"
+                    className={`w-full p-2 rounded bg-gray-800 border ${errors.phoneNumber ? 'border-red-500' : 'border-gray-700'}`}
+                />
+                {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
                 </div>
-              </div>
             </div>
-          </motion.div>
 
-          {/* Address Section */}
-          <motion.div 
-            className="bg-white rounded-2xl shadow-xl overflow-hidden"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="px-8 py-6 bg-gradient-to-r from-blue-600 to-indigo-700">
-              <h2 className="text-2xl font-bold text-white">Address Information</h2>
-            </div>
-            
-            <div className="p-8 space-y-6">
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Street Address*</label>
-                <div className="relative">
-                  <input
+            {/* Address Block */}
+            <div className="border border-gray-700 rounded p-4 space-y-4">
+                <p className="font-semibold">Address Information</p>
+
+                <div>
+                <label className="block mb-1 font-medium">Street Address*</label>
+                <input
                     type="text"
                     name="street"
                     value={ApplyFormData.street}
                     onChange={handleDataapply}
                     placeholder="123 Main Street"
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.street ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                  />
-                  {errors.street ? (
-                    <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                  ) : ApplyFormData.street ? (
-                    <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                  ) : null}
-                </div>
+                    className={`w-full p-2 rounded bg-gray-800 border ${errors.street ? 'border-red-500' : 'border-gray-700'}`}
+                />
                 {errors.street && <p className="text-red-500 text-sm mt-1">{errors.street}</p>}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">City*</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="city"
-                      value={ApplyFormData.city}
-                      onChange={handleDataapply}
-                      placeholder="Boston"
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.city ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                    />
-                    {errors.city ? (
-                      <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                    ) : ApplyFormData.city ? (
-                      <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                    ) : null}
-                  </div>
-                  {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
                 </div>
 
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">State / Province*</label>
-                  <div className="relative">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label className="block mb-1 font-medium">City*</label>
                     <input
-                      type="text"
-                      name="state"
-                      value={ApplyFormData.state}
-                      onChange={handleDataapply}
-                      placeholder="MA"
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.state ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                        type="text"
+                        name="city"
+                        value={ApplyFormData.city}
+                        onChange={handleDataapply}
+                        placeholder="Boston"
+                        className={`w-full p-2 rounded bg-gray-800 border ${errors.city ? 'border-red-500' : 'border-gray-700'}`}
                     />
-                    {errors.state ? (
-                      <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                    ) : ApplyFormData.state ? (
-                      <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                    ) : null}
-                  </div>
-                  {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
+                    {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
                 </div>
 
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Postal / Zip Code*</label>
-                  <div className="relative">
+                <div>
+                    <label className="block mb-1 font-medium">State / Province*</label>
                     <input
-                      type="text"
-                      name="postalCode"
-                      value={ApplyFormData.postalCode}
-                      onChange={handleDataapply}
-                      placeholder="02138"
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.postalCode ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                        type="text"
+                        name="state"
+                        value={ApplyFormData.state}
+                        onChange={handleDataapply}
+                        placeholder="MA"
+                        className={`w-full p-2 rounded bg-gray-800 border ${errors.state ? 'border-red-500' : 'border-gray-700'}`}
                     />
-                    {errors.postalCode ? (
-                      <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                    ) : ApplyFormData.postalCode ? (
-                      <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                    ) : null}
-                  </div>
-                  {errors.postalCode && <p className="text-red-500 text-sm mt-1">{errors.postalCode}</p>}
+                    {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
                 </div>
-              </div>
+
+                <div>
+                    <label className="block mb-1 font-medium">Postal / Zip Code*</label>
+                    <input
+                        type="text"
+                        name="postalCode"
+                        value={ApplyFormData.postalCode}
+                        onChange={handleDataapply}
+                        placeholder="02138"
+                        className={`w-full p-2 rounded bg-gray-800 border ${errors.postalCode ? 'border-red-500' : 'border-gray-700'}`}
+                    />
+                    {errors.postalCode && <p className="text-red-500 text-sm mt-1">{errors.postalCode}</p>}
+                </div>
+                </div>
             </div>
-          </motion.div>
 
-          {/* Education & Role */}
-          <motion.div 
-            className="bg-white rounded-2xl shadow-xl overflow-hidden"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="px-8 py-6 bg-gradient-to-r from-blue-600 to-indigo-700">
-              <h2 className="text-2xl font-bold text-white">Education & Role</h2>
+            {/* Institution & Role */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                <label className="block mb-1 font-medium">Institution / Company*</label>
+                <input
+                    type="text"
+                    name="institution"
+                    value={ApplyFormData.institution}
+                    onChange={handleDataapply}
+                    placeholder="Harvard University"
+                    className={`w-full p-2 rounded bg-gray-800 border ${errors.institution ? 'border-red-500' : 'border-gray-700'}`}
+                />
+                {errors.institution && <p className="text-red-500 text-sm mt-1">{errors.institution}</p>}
+                </div>
+
+                <div>
+                <label className="block mb-1 font-medium">Role / Position*</label>
+                <input
+                    type="text"
+                    name="role"
+                    value={ApplyFormData.role}
+                    onChange={handleDataapply}
+                    placeholder="Computer Science Student"
+                    className={`w-full p-2 rounded bg-gray-800 border ${errors.role ? 'border-red-500' : 'border-gray-700'}`}
+                />
+                {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
+                </div>
             </div>
-            
-            <div className="p-8 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Institution / Company*</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="institution"
-                      value={ApplyFormData.institution}
-                      onChange={handleDataapply}
-                      placeholder="Harvard University"
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.institution ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                    />
-                    {errors.institution ? (
-                      <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                    ) : ApplyFormData.institution ? (
-                      <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                    ) : null}
-                  </div>
-                  {errors.institution && <p className="text-red-500 text-sm mt-1">{errors.institution}</p>}
-                </div>
 
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Role / Position*</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="role"
-                      value={ApplyFormData.role}
-                      onChange={handleDataapply}
-                      placeholder="Computer Science Student"
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.role ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                    />
-                    {errors.role ? (
-                      <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                    ) : ApplyFormData.role ? (
-                      <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                    ) : null}
-                  </div>
-                  {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Skills / Expertise*</label>
-                <div className="relative">
-                  <input
+            {/* Skills */}
+            <div>
+                <label className="block mb-1 font-medium">Skills / Expertise*</label>
+                <input
                     type="text"
                     name="skills"
                     value={ApplyFormData.skills}
                     onChange={handleDataapply}
                     placeholder="Web Dev, AI, Blockchain, Design, etc."
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.skills ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                  />
-                  {errors.skills ? (
-                    <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                  ) : ApplyFormData.skills ? (
-                    <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                  ) : null}
-                </div>
-                <p className="text-xs text-gray-500 mt-1">Separate skills with commas</p>
+                    className={`w-full p-2 rounded bg-gray-800 border ${errors.skills ? 'border-red-500' : 'border-gray-700'}`}
+                />
                 {errors.skills && <p className="text-red-500 text-sm mt-1">{errors.skills}</p>}
-              </div>
             </div>
-          </motion.div>
 
-          {/* Team Information */}
-          <motion.div 
-            className="bg-white rounded-2xl shadow-xl overflow-hidden"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <div className="px-8 py-6 bg-gradient-to-r from-blue-600 to-indigo-700">
-              <h2 className="text-2xl font-bold text-white">Team Information</h2>
-            </div>
-            
-            <div className="p-8 space-y-6">
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Team Name*</label>
-                <div className="relative">
-                  <input
+            {/* Team Name */}
+            <div>
+                <label className="block mb-1 font-medium">Team Name*</label>
+                <input
                     type="text"
                     name="teamName"
                     value={ApplyFormData.teamName}
                     onChange={handleDataapply}
                     placeholder="e.g., Code Warriors"
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.teamName ? 'border-red-500 pr-10' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                  />
-                  {errors.teamName ? (
-                    <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3.5" />
-                  ) : ApplyFormData.teamName ? (
-                    <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                  ) : null}
-                </div>
+                    className={`w-full p-2 rounded bg-gray-800 border ${errors.teamName ? 'border-red-500' : 'border-gray-700'}`}
+                />
                 {errors.teamName && <p className="text-red-500 text-sm mt-1">{errors.teamName}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Team Lead Name</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="teamLeadName"
-                    value={ApplyFormData.teamLeadName}
-                    onChange={handleDataapply}
-                    placeholder="Head of the team"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  />
-                  {ApplyFormData.teamLeadName && (
-                    <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                  )}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Team Size</label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    name="membersCount"
-                    min="1"
-                    max="5"
-                    value={ApplyFormData.membersCount}
-                    onChange={handleDataapply}
-                    placeholder="1-5 members"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  />
-                  {ApplyFormData.membersCount && (
-                    <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3.5" />
-                  )}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Project Idea*</label>
-                <div className="relative">
-                  <textarea
-                    rows="4"
-                    name="ideaDescription"
-                    value={ApplyFormData.ideaDescription}
-                    onChange={handleDataapply}
-                    placeholder="Briefly describe your project idea or area of interest..."
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.ideaDescription ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
-                  ></textarea>
-                  {errors.ideaDescription ? (
-                    <XCircleIcon className="h-5 w-5 text-red-500 absolute right-3 top-3" />
-                  ) : ApplyFormData.ideaDescription ? (
-                    <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-3 top-3" />
-                  ) : null}
-                </div>
-                {errors.ideaDescription && <p className="text-red-500 text-sm mt-1">{errors.ideaDescription}</p>}
-              </div>
             </div>
-          </motion.div>
 
-          {/* Submit Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="pt-4"
-          >
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`w-full py-4 px-6 rounded-xl text-lg font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] ${
-                isSubmitting 
-                  ? 'bg-blue-400 cursor-not-allowed' 
-                  : 'bg-gradient-to-r from-blue-600 to-indigo-700 hover:shadow-lg hover:shadow-blue-200'
-              }`}
+            {/* Team main name */}
+            <div>
+                <label className="block mb-2 font-medium">Team Lead Name</label>
+                <input placeholder='Head of the team' name="teamLeadName" value={ApplyFormData.teamLeadName} onChange={handleDataapply} className='w-full p-2 rounded bg-gray-800 border border-gray-700' />
+            </div>
+
+            <div>
+                <label className="block mb-2 font-medium">Members</label>
+                <input placeholder='1 or 2 or 3 or 4 ' name="membersCount" value={ApplyFormData.membersCount} onChange={handleDataapply} className='w-full p-2 rounded bg-gray-800 border border-gray-700' />
+            </div>
+
+            {/* Idea Description */}
+            <div>
+                <label className="block mb-1 font-medium">
+                Describe your idea or area of interest*
+                </label>
+                <textarea
+                onChange={handleDataapply}
+                rows="4"
+                name="ideaDescription"
+                value={ApplyFormData.ideaDescription}
+                placeholder="Briefly explain what you plan to build or explore..."
+                className="w-full p-2 rounded bg-gray-800 border border-gray-700"
+                />
+            </div>
+
+            {/* Submit Button */}
+            <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className={`w-full ${isSubmitting ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'} text-white font-semibold py-3 px-4 rounded-lg transition-colors`}
             >
-              {isSubmitting ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  <span>Submitting...</span>
-                </div>
-              ) : (
-                'Submit Application'
-              )}
+                {isSubmitting ? 'Submitting...' : 'Submit Application'}
             </button>
-          </motion.div>
-        </form>
-      </motion.div>
+            </div>
+      </form>
     </div>
   )
 }
