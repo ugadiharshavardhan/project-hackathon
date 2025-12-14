@@ -78,6 +78,7 @@ function AppliedEvent() {
                 },
                 body: JSON.stringify({
                     ...ApplyFormData,
+                    // eventId : EventDetails,
                     eventTitle: EventDetails.EventTitle,
                     eventType: EventDetails.EventType,
                     StartDate : EventDetails.StartDate,
@@ -96,7 +97,7 @@ function AppliedEvent() {
                 toast.error(data.message || 'Failed to submit application');
                 return;
             }
-            toast.success("Applied successfully!");
+            toast.success(`Applied successfully for ${EventDetails.EventTitle}!`);
             navigate('/user/allevents');
         } catch (error) {
             console.error('Error submitting application:', error);
@@ -132,22 +133,21 @@ function AppliedEvent() {
         }
         fetchEvent()
     },[eventid])
+
+    const handleBackBtn = () => {
+        navigate("/user/allevents",{replace:true})
+    }
+
   return (
     <div className='pt-25 bg-gray-500'>
+        <span className="border border-black cursor-pointer p-2"
+            onClick={handleBackBtn} >
+            {/* <FaArrowLeft size={15} /> */}
+            back
+        </span>
       <form onSubmit={handleSubmitApply} >
         <div className="max-w-3xl mx-auto bg-gray-900 text-white p-8 rounded-lg shadow-lg space-y-8">
             <h2 className="text-2xl font-semibold mb-4">Hackathon Registration Form</h2>
-
-            {/* <label className="block mb-1 font-medium">Event Name</label>
-                <input
-                    type="text"
-                    name="eventname"
-                    value={EventDetails.EventTitle}
-                    onChange={handleDataapply}
-                    placeholder="Event Name"
-                    className={`w-full p-2 rounded bg-gray-800 border border-gray-700`}
-                /> */}
-            {/* Name */}
             <div>
                 <label className="block mb-1 font-medium">Full Name (First & Last)*</label>
                 <input

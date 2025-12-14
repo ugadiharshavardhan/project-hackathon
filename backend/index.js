@@ -1,21 +1,25 @@
-// main API file
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
+import cors from "cors";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-import cors from "cors";
 import { userModel } from "./models/userModels.js";
 import { AdminModel } from "./models/adminModel.js";
 import { TechEventsModel } from "./models/TechEvents.js";
 import { verifyAdmin } from "./middleware/authorizeAdmin.js";
 import { AppliedEventModel } from "./models/applyEvent.js";
 import { verifyUserToken } from "./middleware/userAuth.js";
+import { projectModel } from "./models/ProjectSchema.js";
+import { SavedModel } from "./models/Saved.js";
+
 
 const app = express();
-dotenv.config();
 app.use(express.json());
+
 
 app.use(cors({
   origin: ["http://localhost:5173", "http://localhost:5174"],
@@ -24,6 +28,8 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
+
+// const upload = multer({ dest: "uploads/" });
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "GET is successful" });
@@ -181,6 +187,24 @@ app.delete("/events/:id", verifyAdmin, async (req, res) => {
 });
 
 
+app.delete("/projects/:id", verifyAdmin, async (req, res) => {
+  try {
+    const deletedEvent = await projectModel.findOneAndDelete({
+      _id: req.params.id,
+      createdBy: req.adminId
+    });
+
+    if (!deletedEvent)
+      return res.status(404).json({ message: "Event not found or not owned by you" });
+
+    res.status(200).json({ message: "Event deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
 // CREATE EVENT
 app.post("/events/post", verifyAdmin, async (req, res) => {
   try {
@@ -200,6 +224,78 @@ app.post("/events/post", verifyAdmin, async (req, res) => {
   }
 });
 
+//public home data
+app.get("/publicdata",async(req,res)=> {
+  try{
+    const activeEvents = await TechEventsModel.find() 
+    const registered = await AppliedEventModel.find()
+    res.status(200).json({
+      message:"Active Events and Registered Students",
+      event:activeEvents,
+      register:registered
+    })
+  }
+  catch(err) {
+    console.log(err)
+    res.status(500).json({
+      message:err.message
+    })
+  }
+})
+
+//create project by admin
+app.post("/createproject",verifyAdmin,async(req,res)=> {
+  try {
+    const newProject = new projectModel({
+      ...req.body,
+      createdBy:req.adminId
+    })
+    await newProject.save();
+    res.status(201).json({
+      message:"Project Created Successfully"
+    })
+  }
+  catch(err) {
+    console.log(err)
+    res.status(500).json({
+      message:err.message
+    })
+  }
+})
+
+//retrive projects
+app.get("/user/projects",verifyUserToken,async(req,res)=> {
+  try {
+    const projects = await projectModel.find();
+    res.status(200).json({
+      mesaage:"Projects",
+      events:projects
+    })
+  }
+  catch(err) {
+    console.log(err)
+    res.status(500).json({
+      message:err.message
+    })
+  }
+})
+
+
+app.get("/projects",verifyAdmin,async(req,res)=> {
+  try {
+    const projects = await projectModel.find({ createdBy: req.adminId });
+    res.status(200).json({
+      mesaage:"Projects",
+      events:projects
+    })
+  }
+  catch(err) {
+    console.log(err)
+    res.status(500).json({
+      message:err.message
+    })
+  }
+})
 
 //get applied events
 app.get("/user/appliedevents",verifyUserToken,async(req,res)=> {
@@ -218,19 +314,35 @@ app.get("/user/appliedevents",verifyUserToken,async(req,res)=> {
 })
 
 
-// app.get("/user/appliedevents/:eventId",verifyUserToken,async(req,res)=> {
-//   try {
-//     const eventId = req.params.eventId;
-//     const eventDetail = await AppliedEventModel.findById(eventId)
-//     res.status(200).json({
-//       eventDetails:eventDetail
-//     })
-//   }
-//   catch(error) {
-//     console.error("Error applying for event:", error);
-//     res.status(500).json({ message: "Server Error", error: error.message });
-//   }
-// })
+app.get("/allappliedevents",verifyUserToken,async(req,res)=> {
+  try {
+    const events = await AppliedEventModel.find()
+    res.status(200).json({
+      message:"AppliedEvents",
+      events:events
+    })
+  }
+  catch(error) {
+    console.error("Error applying for event:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+
+})
+
+app.get("/projects/:id",verifyUserToken,async(req,res)=> {
+  try {
+    const {id} = req.params;
+    const projectDetails = await projectModel.findById(id)
+    res.status(200).json({
+      message:"Each Project Details",
+      events:projectDetails
+    })
+  }
+  catch(error) {
+    console.error("Error applying for event:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+})
 
 //apply event
 app.post("/event/apply/:eventId", verifyUserToken, async (req, res) => {
@@ -327,6 +439,50 @@ app.get("/user/applications", async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
+
+app.post("/user/saved", verifyUserToken, async (req, res) => {
+  try {
+    const { eventid, save } = req.body;
+    const userId = req.user._id;
+
+    const savedEvent = await SavedModel.findOneAndUpdate(
+      { eventid, userId },
+      { save },
+      { new: true, upsert: true }
+    );
+
+    res.status(200).json({
+      message: save ? "Event Saved" : "Event Unsaved",
+      event: savedEvent,
+    });
+  } catch (error) {
+    console.error("Error saving event:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+
+app.get("/user/savedevents", verifyUserToken, async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const savedEvents = await SavedModel.find({
+      userId,
+      save: true,
+    }).populate("eventid");
+
+
+    res.status(200).json({
+      success: true,
+      events: savedEvents,
+    });
+  } catch (error) {
+    console.error("Error fetching saved events:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
 
 // DATABASE CONNECTION
 async function connection() {

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
 import { FormContext } from "../contextApi/FormContext";
 import Cookies from "js-cookie"
+import toast from "react-hot-toast";
 
 const Form = ({ event }) => {
   const { form, setForm } = useContext(FormContext);
@@ -102,6 +103,14 @@ const Form = ({ event }) => {
 
     // Close form modal
     setForm({ open: false, event: null });
+
+    if(method==="PUT") {
+      toast.success("Event Updated Succesfully!")
+    }
+    else {
+      toast.success("Event Created Succesfully!")
+    }
+
   };
 
   return (

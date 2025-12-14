@@ -12,6 +12,7 @@ function ProtectedRoute({children}) {
     <div>
         <UserNavbar />
         {children}
+        
     </div>
   )
 }

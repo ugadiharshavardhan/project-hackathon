@@ -3,18 +3,17 @@ import { FaCalendarAlt, FaMapMarkerAlt, FaTrophy, FaClock } from "react-icons/fa
 import { useParams } from "react-router";
 import { FaArrowLeft } from "react-icons/fa";
 import Cookies from "js-cookie";
-// import { FaRegBookmark } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import { FaRegBookmark } from "react-icons/fa";
 
 const EachEventDetails = () => {
   const navigate = useNavigate();
   const { eventid } = useParams();
   const jwtToken = Cookies.get("jwt_token");
+  const [Issaved,setIsSaved] = useState(null)
+  const [ClassName,setClassName] = useState("")
   const [eachData, setEachData] = useState({});
-  const [value, setValue] = useState(0);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
-  // const [claName,setClaName] = useState("bg-white text-black")
-  // const [Save,setSave] = useState(true)
 
   useEffect(() => {
     const fetchEventDetails = async () => {
@@ -44,7 +43,7 @@ const EachEventDetails = () => {
     if (eachData.StartDate) {
       const today = new Date();
       const eventStart = new Date(eachData.StartDate);
-      eventStart.setDate(eventStart.getDate() - 1); // 5 days before event
+      eventStart.setDate(eventStart.getDate() - 1); 
 
       const isValid = today > eventStart;
       setIsRegistrationOpen(isValid);
@@ -56,18 +55,6 @@ const EachEventDetails = () => {
     navigate(`/events/apply/${eventid}`, {replace: true});
   }
 
-  // const handleSaveBtn = () => {
-  //   if (claName==="text-blue-500 bg-white") {
-  //     setClaName("text-black bg-white")
-  //     setSave(false)
-  //   }
-  //   else {
-  //     setClaName("text-blue-500 bg-white")
-  //     setSave(true) 
-  //   }
-  // }
-  // console.log(Save)
-  // Format date helper
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -82,7 +69,7 @@ const EachEventDetails = () => {
     return `${dayName}, ${month} ${day} ${year}`;
   };
 
-  // 🔹 Deadline (5 days before)
+  //Deadline (5 days before)
   const DeadLineDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -102,6 +89,38 @@ const EachEventDetails = () => {
     navigate("/user/allevents", { replace: true });
   };
 
+  //save btn
+ const handleSaveBtn = async () => {
+  const newSaveState = !Issaved;   
+  setIsSaved(newSaveState);
+  setClassName(
+    !newSaveState ? "bg-black text-white" : "bg-white text-black"
+  );
+
+  const EventSaved = {
+    eventid: eventid,
+    save: newSaveState, 
+  };
+
+  try {
+    const url = "http://localhost:5678/user/saved";
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${Cookies.get("jwt_token")}`,
+      },
+      body: JSON.stringify(EventSaved),
+    };
+
+    const response = await fetch(url, options);
+    const data = await response.json();
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
   return (
     <div className="min-h-screen bg-[#0b0b0d] text-white p-8 flex flex-col items-center pt-30">
       {/* Header */}
@@ -115,12 +134,15 @@ const EachEventDetails = () => {
               <FaArrowLeft size={15} />
             </span>
             <span className="bg-emerald-600 text-white px-3 py-1 rounded-full">
-              🎓 {eachData.Organizer} Event
+               {eachData.Organizer} Event
+            </span>
+            <span className="bg-blue-600 text-white px-3 py-1  ml-2 rounded-full">
+               {eachData.EventType}
             </span>
           </div>
-          {/* <span onClick={handleSaveBtn} className={`${claName} px-3 py-1 rounded-full`}>
+          <span onClick={handleSaveBtn} className={`${ClassName}  px-3 cursor-pointer py-1 rounded-full`}>
             <FaRegBookmark size={20} />
-          </span> */}
+          </span>
         </div>
         <h1 className="text-4xl font-bold mt-2">{eachData.EventTitle}</h1>
         <p className="text-gray-400 pt-1">
@@ -200,28 +222,6 @@ const EachEventDetails = () => {
           {/* Registration */}
           <div className="bg-[#16161a] p-5 rounded-2xl border border-gray-800">
             <h2 className="text-xl font-semibold mb-2">Registration</h2>
-
-            <p className="text-sm mb-2">
-              <span className="float-right text-gray-200">
-                10 / {eachData.Slots}
-              </span>
-            </p>
-
-            <div className="w-full mb-2">
-              <input
-                type="range"
-                min="0"
-                max={eachData.Slots}
-                step="5"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                className="w-64 accent-violet-600"
-              />
-            </div>
-
-            <p className="text-gray-400 text-xs mb-3">
-              {eachData.Slots - 10} spots remaining
-            </p>
             <p className="flex items-center gap-2 text-gray-400 text-sm mb-3">
               <FaClock /> Deadline: {DeadLineDate(eachData.EndDate)}
             </p>

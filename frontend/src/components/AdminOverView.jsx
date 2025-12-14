@@ -1,9 +1,15 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import CounterContext from '../contextApi/TotalCountsContext';
+import Cookies from "js-cookie"
 import { Calendar, CheckCircle, Trophy, BarChart2 } from "lucide-react";
+import { FaUsersCog } from "react-icons/fa";
 
 function AdminOverView() {
     const { count } = useContext(CounterContext);
+    const [hackathonsCount,setHackathonCount] = useState(0)
+    const [WorkShopCount,setWorkShopCount] = useState(0)
+    const [TechCount,setTechCount] = useState(0)
+    const [data,setData] = useState([])
     const stats = [
     {
       title: "Total Events",
@@ -12,24 +18,61 @@ function AdminOverView() {
       color: "text-purple-500",
     },
     {
-      title: "Verified Events",
-      value: count,
-      icon: <CheckCircle className="text-green-500 w-6 h-6" />,
+      title: "Workshops",
+      value: WorkShopCount,
+      icon: <FaUsersCog className="text-blue-500 w-6 h-6" />,
       color: "text-green-500",
     },
     {
       title: "Hackathons",
-      value: 4,
+      value: hackathonsCount,
       icon: <Trophy className="text-green-500 w-6 h-6" />,
       color: "text-green-500",
     },
     {
-      title: "Upcoming Events",
-      value: 0,
+      title: "Tech Events",
+      value: TechCount,
       icon: <BarChart2 className="text-yellow-500 w-6 h-6" />,
       color: "text-yellow-500",
     },
   ];
+
+  useEffect(()=> {
+    const fetchApi = async() => {
+      const url = "http://localhost:5678/events/my"
+      const options = {
+        method:"GET",
+        headers : {
+          "Content-Type":"application/json",
+          "Authorization":`Bearer ${Cookies.get("admin_token")}`
+        }
+      }
+      const response = await fetch(url,options)
+      const data = await response.json()
+      setData(data.events)
+    }
+    fetchApi()
+  },[])
+
+  
+  useEffect(() => {
+    if (!data || data.length === 0) return;
+
+    let hack = 0;
+    let work = 0;
+    let tech = 0;
+
+    data.forEach((item) => {
+      if (item.EventType === "Hackathon") hack++;
+      else if (item.EventType === "Workshop") work++;
+      else tech++;
+    });
+
+    setHackathonCount(hack);
+    setWorkShopCount(work);
+    setTechCount(tech);
+  }, [data]);
+
 
   return (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">

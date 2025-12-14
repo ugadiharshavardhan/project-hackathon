@@ -26,10 +26,18 @@ const AdminDashboard = () => {
   }
   // console.log(drodownValue)
 
+  const handleHome = () => {
+    navigate("/",{replace:true})
+  }
+
+  const handleCreateProject = () => {
+    navigate("/createproject",{replace:true})
+  }
+
   return (
     <div className="min-h-screen bg-black text-white px-10 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">
+        <h1 onClick={handleHome} className="text-2xl cursor-pointer font-bold">
           Admin <span className="text-blue-500">Dashboard</span>
         </h1>
         <button
@@ -56,6 +64,12 @@ const AdminDashboard = () => {
           >
             + Create Event
           </button>
+          <button
+            onClick={handleCreateProject}
+            className="px-6 py-2 bg-gray-800 rounded-lg shadow hover:bg-gray-700 transition m-1"
+          >
+            + Create Project
+          </button>
         </div>
         <div className="m-1">
           <select className="bg-gray-700 p-2 rounded-xl" value={drodownValue} onChange={(e)=>handleDropValue(e)} >
@@ -63,6 +77,7 @@ const AdminDashboard = () => {
             <option value={"Hackathon"}>Hackathon</option>
             <option value={"Workshop"}>Workshop</option>
             <option value={"Tech Event"}>Tech Event</option>
+            <option value={"Projects"}>Projects</option>
           </select>
         </div>
       </div>

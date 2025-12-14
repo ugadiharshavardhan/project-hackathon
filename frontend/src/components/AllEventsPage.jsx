@@ -6,15 +6,17 @@ import {
   FaTrophy,
   FaExternalLinkAlt,
 } from "react-icons/fa";
+import { FaGraduationCap } from "react-icons/fa";
 import { LuClock3 } from "react-icons/lu";
 import Cookies from "js-cookie"
-// import EachEventDetails from "./EachEventDetails";
 import { useNavigate } from "react-router";
+import { FaBuilding } from "react-icons/fa";
+import { FaLandmark } from "react-icons/fa";
 
-function AllEventsPage({searchQuery,eventType,organizer,stack}) {
+function AllEventsPage({searchQuery,eventType,organizer}) {
   const [TotalEvents, setTotalEvents] = useState([]);
-  const token = Cookies.get("jwt_token")
-  const navigate = useNavigate()
+  const token = Cookies.get("jwt_token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const allEventsData = async () => {
@@ -29,7 +31,6 @@ function AllEventsPage({searchQuery,eventType,organizer,stack}) {
         if (response.ok) {
           const data = await response.json();
           setTotalEvents(data.allevents || []);
-          console.log(data)
         }
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -38,161 +39,138 @@ function AllEventsPage({searchQuery,eventType,organizer,stack}) {
     allEventsData();
   }, []);
 
+
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
+    const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
 
-  let filteredEvents = TotalEvents
+  let filteredEvents = TotalEvents;
 
-  if (searchQuery.trim()!=="") {
-    filteredEvents = filteredEvents.filter((each)=>each.EventTitle.toLowerCase().includes(searchQuery.toLowerCase()))
+  if (searchQuery.trim() !== "") {
+    filteredEvents = filteredEvents.filter((each) =>
+      each.EventTitle.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   }
-  if ( eventType!=="All Types" && eventType !=="") {
-    filteredEvents = filteredEvents.filter((each)=>each.EventType.toLowerCase().includes(eventType.toLowerCase()))
+
+  if (eventType !== "All Types" && eventType !== "") {
+    filteredEvents = filteredEvents.filter((each) =>
+      each.EventType.toLowerCase().includes(eventType.toLowerCase())
+    );
   }
-  if (stack!=="All Stacks" && stack!=="" ) {
-    filteredEvents = filteredEvents.filter((each)=>each.SpecifiedStacks.toLowerCase().includes(stack.toLowerCase()))
+
+  if (organizer !== "All Organizers" && organizer !== "") {
+    filteredEvents = filteredEvents.filter((each) =>
+      each.Organizer.toLowerCase().includes(organizer.toLowerCase())
+    );
   }
-  if ( organizer!=="All Organizers" && organizer !=="") {
-    filteredEvents = filteredEvents.filter((each)=>each.Organizer.toLowerCase().includes(organizer.toLowerCase()))
-  }
-  
+
   const remainingDays = (dateString) => {
     const date = new Date(dateString);
-    const todayDate = new Date();
-
-    // Remove time part (set both to midnight for accurate day difference)
+    const today = new Date();
     date.setHours(0, 0, 0, 0);
-    todayDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
 
-    const remaining = (date - todayDate);
-    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-    if (days==0) {
-      return "Today"
-    }
-    else if (days<0) {
-      return "Expired"
-    }
-    else {
-      return `${days} Days Left`;
-    }
-
+    const days = Math.floor((date - today) / (1000 * 60 * 60 * 24));
+    if (days === 0) return "Today";
+    if (days < 0) return "Expired";
+    return `${days} Days Left`;
   };
 
   const handleViewDetails = (eventid) => {
-    navigate(`/user/allevents/${eventid}`)
-  }
+    navigate(`/user/allevents/${eventid}`);
+  };
 
   return (
     <div className="bg-black min-h-screen w-full">
-      {/* Grid Container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-2">
-        {filteredEvents.length===0? 
+        {filteredEvents.length === 0 ? (
           <p className="text-center text-gray-500 col-span-full">
             No events found matching your filters.
           </p>
-        :
-        (filteredEvents.map((each, _id) => (
-          <div
-            key={_id}
-            className="bg-[#111] text-white rounded-xl p-5 border border-gray-800 shadow-lg hover:shadow-xl transition-all"
-          >
-            {/* Top badges */}
-            <div className="flex items-center gap-2 mb-3">
-              <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full font-medium">
-                {each.Organizer}
-              </span>
-              <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full font-medium">
-                {each.EventType}
-              </span>
-              <span className="bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-medium">
-                Verified
-              </span>
-            </div>
+        ) : (
+          filteredEvents.map((each, _id) => (
+            <div
+              key={_id}
+              className="bg-[#111111] text-white rounded-xl p-5 border border-gray-800 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                {each.Organizer === "College" ? (
+                  <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full font-medium flex">
+                    <FaGraduationCap className="mr-1" /> College
+                  </span>
+                ) : each.Organizer === "Government" ? (
+                  <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full font-medium flex">
+                    <FaLandmark className="mr-1" /> Government
+                  </span>
+                ) : (
+                  <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full font-medium flex">
+                    <FaBuilding className="mr-1" /> {each.Organizer}
+                  </span>
+                )}
 
-            {/* Title */}
-            <h2 className="text-xl font-semibold mb-1">{each.EventTitle}</h2>
-            <p className="text-gray-400 text-sm mb-4">
-              {each.EventDescription}
-            </p>
-
-            {/* Details */}
-            <div className="space-y-2 text-gray-300 text-sm">
-              <div className="flex items-center gap-2">
-                <FaCalendarAlt className="text-gray-400" />
-                <span>
-                  {formatDate(each.StartDate)} - {formatDate(each.EndDate)}
+                <span className="bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-medium">
+                  {each.EventType}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <FaMapMarkerAlt className="text-gray-400" />
-                <span>
-                  {each.City}, {each.State}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FaUserAlt className="text-gray-400" />
-                <span>{each.Venue}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FaTrophy className="text-yellow-500" />
-                <span className="text-yellow-500 font-semibold">
-                  ₹ {each.PricePool} in prizes
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FaUserAlt className="text-gray-400" />
-                <span>Slots: {each.Slots}</span>
-              </div>
-              
-            </div>
 
-            {/* Tags */}
-            <ul className="flex flex-wrap gap-2 mt-4">
-              {each.SpecifiedStacks?.split(",").map((stack, index) => (
-                <li
-                  key={index}
-                  className="bg-gray-800 text-gray-200 text-xs px-3 py-1 rounded-full"
+              {/* Title */}
+              <h2 className="text-xl font-semibold mb-1">{each.EventTitle}</h2>
+              <p className="text-gray-400 text-sm mb-4">{each.EventDescription}</p>
+
+              {/* Details */}
+              <div className="space-y-2 text-gray-300 text-sm">
+                <div className="flex items-center gap-2">
+                  <FaCalendarAlt /> {formatDate(each.StartDate)} - {formatDate(each.EndDate)}
+                </div>
+                <div className="flex items-center gap-2">
+                  <FaMapMarkerAlt /> {each.City}, {each.State}
+                </div>
+                <div className="flex items-center gap-2">
+                  <FaUserAlt /> {each.Venue}
+                </div>
+                <div className="flex items-center gap-2 text-yellow-500">
+                  <FaTrophy /> ₹ {each.PricePool} in prizes
+                </div>
+                <div className="flex items-center gap-2">
+                  <FaUserAlt /> Slots: {each.Slots}
+                </div>
+              </div>
+
+              {/* Skills */}
+              <ul className="flex flex-wrap gap-2 mt-4">
+                {each.SpecifiedStacks?.split(",").map((stack, index) => (
+                  <li
+                    key={index}
+                    className="bg-gray-800 text-gray-200 text-xs px-3 py-1 rounded-full"
+                  >
+                    {stack.trim()}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Bottom Section */}
+              <div className="flex justify-between items-center mt-5">
+                <div className="flex items-center text-gray-500 text-sm">
+                  <LuClock3 className="mr-1" /> - {remainingDays(each.StartDate)}
+                </div>
+
+                <button
+                  onClick={() => handleViewDetails(each._id)}
+                  className="flex cursor-pointer items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white text-sm px-4 py-2 rounded-md transition"
                 >
-                  {stack.trim()}
-                </li>
-              ))}
-            </ul>
-
-            {/* Bottom Section */}
-            <div className="flex justify-between items-center mt-5">
-              <div className="flex items-center text-gray-500 text-sm">
-                <LuClock3 className="mr-1" />
-                <span>{`- ${remainingDays(each.StartDate)}`}</span>
+                  View Details <FaExternalLinkAlt size={12} />
+                </button>
               </div>
-              <button onClick={(e)=> {
-                e.preventDefault()
-                handleViewDetails((each._id))}} className="flex  cursor-pointer items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white text-sm px-4 py-2 rounded-md transition">
-                View Details <FaExternalLinkAlt size={12} />
-              </button>
+
             </div>
-          </div>
-        )))
-      }
+          ))
+        )}
       </div>
     </div>
   );
