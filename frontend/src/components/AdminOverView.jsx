@@ -39,7 +39,7 @@ function AdminOverView() {
 
   useEffect(()=> {
     const fetchApi = async() => {
-      const url = "http://localhost:5678/events/my"
+      const url = "https://project-hackathon-7utw.onrender.com/events/my"
       const options = {
         method:"GET",
         headers : {

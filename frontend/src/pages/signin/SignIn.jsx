@@ -32,7 +32,7 @@ const SignIn = () => {
     event.preventDefault();
     const userDetails = { email, password };
 
-    const response = await fetch("http://localhost:5678/signin", {
+    const response = await fetch("https://project-hackathon-7utw.onrender.com/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userDetails),
@@ -53,15 +53,14 @@ const SignIn = () => {
     <div className="min-h-screen w-full bg-[#023e8a] bg-cover bg-center relative flex items-center justify-center px-4 sm:px-6">
       <div className="absolute inset-0 bg-black/20"></div>
 
-      {/* Header */}
       <header className="absolute top-4 left-4 sm:top-6 sm:left-10 z-20 flex">
         <FaCode size={38} className="text-white mt-1" />
         <h1 className="text-4xl font-bold text-white">HackNext</h1>
       </header>
 
-      {/* Main Container */}
+      
       <div className="flex h-[470px]">
-        {/* Left Image */}
+
         <div>
           <img
             className="h-full rounded-l-2xl brightness-170"
@@ -70,7 +69,6 @@ const SignIn = () => {
           />
         </div>
 
-        {/* Right Login Card */}
         <div className="relative z-10 bg-white p-6 sm:p-8 md:p-10 rounded-r-xl w-full max-w-[360px] border border-white/40 flex flex-col justify-center">
           <h1 className="text-4xl font-bold text-center mb-2">
             Student Login
@@ -80,7 +78,7 @@ const SignIn = () => {
           </p>
 
           <form className="flex flex-col space-y-5" onSubmit={handleSubmitForm}>
-            {/* Email */}
+            
             <div>
               <label className="text-black text-xs sm:text-sm font-semibold">
                 EMAIL
@@ -94,7 +92,7 @@ const SignIn = () => {
               />
             </div>
 
-            {/* Password */}
+            
             <div>
               <label className="text-black text-xs sm:text-sm font-semibold">
                 PASSWORD
@@ -108,14 +106,13 @@ const SignIn = () => {
               />
             </div>
 
-            {/* Fixed Height Error Message */}
+            
             <div className="min-h-[20px]">
               {isErr && (
                 <p className="text-red-500 text-sm">{showErrorMsg}</p>
               )}
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded transition cursor-pointer"

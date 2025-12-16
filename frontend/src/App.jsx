@@ -36,7 +36,6 @@ function App() {
             <Route path="/user/allevents" element={<ProtectedRoute><DisplayAllEvents /></ProtectedRoute>} />
             <Route path="/user/allevents/:eventid" element={<ProtectedRoute><EachEventDetails /></ProtectedRoute>} />
             <Route path="/events/apply/:eventid" element={<ProtectedRoute><AppliedEvent /></ProtectedRoute>} />
-            {/* <Route path="/user/appliedevents" element={<ProtectedRoute><Eventsbyuser /></ProtectedRoute>} /> */}
             <Route path="/user/account" element={<ProtectedRoute><UserAccount /></ProtectedRoute>} />
             <Route path="/projects/:id" element={<ProtectedRoute><EachProject /></ProtectedRoute>} />
             <Route path="/createproject" element={<CreateProjectAdmin />} />

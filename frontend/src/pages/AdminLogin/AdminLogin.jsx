@@ -41,7 +41,7 @@ function AdminLogin() {
   const handleSubmitForm = async(event) =>{
     event.preventDefault()
 
-    const url = "http://localhost:5678/admin/login"
+    const url = "https://project-hackathon-7utw.onrender.com/admin/login"
     const AdminDetails = {
       email,
       code
@@ -112,7 +112,6 @@ function AdminLogin() {
                   
                 </div>
 
-                {/* Password */}
                 <div>
                   <label className="text-black text-xs sm:text-sm font-semibold">code</label>
                   <input
@@ -125,7 +124,7 @@ function AdminLogin() {
                   
                 </div>
                 {isErr ? <p className="text-red-500 text-sm">{showErrorMsg}</p> : "‎"  }
-                {/* Submit Button */}
+                
                 <button
                   type="submit"
                   className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded transition cursor-pointer"

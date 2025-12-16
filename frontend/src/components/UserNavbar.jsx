@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router'
 import { FaHome } from "react-icons/fa";
-import { FaAngleDoubleRight } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 
@@ -11,10 +10,6 @@ function UserNavbar() {
     const handleRefresh = () => {
       navigate("/",{replace:true})
     }
-
-    // const handleAppliedEventsByUser = () => {
-    //   navigate("/user/appliedevents",{replace:true})
-    // }
 
     const handleUserAccount = () => {
       navigate("/user/account",{replace:true})

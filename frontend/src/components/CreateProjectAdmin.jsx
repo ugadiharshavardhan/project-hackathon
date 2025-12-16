@@ -33,7 +33,7 @@ function CreateProjectAdmin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting:", formData);
-    const url = "http://localhost:5678/createproject"
+    const url = "https://project-hackathon-7utw.onrender.com/createproject"
     const options = {
       method: "POST",
         headers: { "Content-Type": "application/json",

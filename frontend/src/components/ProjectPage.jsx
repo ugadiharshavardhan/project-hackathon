@@ -29,7 +29,7 @@ function ProjectsPage() {
   useEffect(() => {
     const fetchProjectData = async () => {
       try {
-        const url = "http://localhost:5678/user/projects";
+        const url = "https://project-hackathon-7utw.onrender.com/user/projects";
         const options = {
           method: "GET",
           headers: {

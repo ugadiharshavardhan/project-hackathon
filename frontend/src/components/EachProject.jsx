@@ -12,7 +12,7 @@ function EachProject() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const url = `http://localhost:5678/projects/${id}`;
+            const url = `https://project-hackathon-7utw.onrender.com/projects/${id}`;
             const options = {
                 method: "GET",
                 headers: {
@@ -29,7 +29,6 @@ function EachProject() {
         fetchData();
     }, [id]);
 
-    // ICONS FOR STACK LIST
     const stackIcons = {
         HTML: <FaHtml5 className="text-orange-500" />,
         CSS: <FaCss3Alt className="text-blue-500" />,

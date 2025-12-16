@@ -27,7 +27,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = "http://localhost:5678/publicdata";
+      const url = "https://project-hackathon-7utw.onrender.com/publicdata";
       const options = {
         method: "GET",
         headers: {
@@ -56,12 +56,10 @@ const Home = () => {
 
   return (
     <div style={{ width: "100%", minHeight: "100vh", position: "relative" }}>
-      {/* Main Content */}
+      
       <div className="z-10 text-white min-h-screen flex flex-col items-center justify-center px-6 relative bg-[#070b1e] overflow-hidden">
 
-        {/* Background Glow */}
         <div className="absolute inset-0 -z-10">
-          {/* Bottom Purple Glow */}
           <div
             className="absolute bottom-[-35%] left-1/2 -translate-x-1/2
             w-[1200px] h-[1200px] rounded-full
@@ -69,7 +67,6 @@ const Home = () => {
             blur-[90px]"
           />
 
-          {/* Top Blue Glow */}
           <div
             className="absolute top-[-25%] left-[60%]
             w-[900px] h-[900px] rounded-full
@@ -78,7 +75,6 @@ const Home = () => {
           />
         </div>
 
-        {/* Top Right Text */}
         <button onClick={handleUserEvents} className="cursor-pointer mt-1 absolute top-6 right-35 border border-transparent font-bold text-center text-sm tracking-wide text-gray-300">
           sign in 
         </button>
@@ -89,27 +85,23 @@ const Home = () => {
           sign up →
         </button>
 
-        {/* Top Badge */}
         <div className="mt-4">
           <button className="px-4 py-2 text-sm rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90 transition">
             🚀 Discover Your Next Tech Adventure
           </button>
         </div>
 
-        {/* Title */}
         <h1 className="text-5xl md:text-6xl font-bold text-center mt-10">
           <span className="bg-gradient-to-r text-white bg-clip-text text-transparent">
             HackNext
           </span>
         </h1>
 
-        {/* Subtitle */}
         <p className="text-gray-300/80 text-lg md:text-xl text-center mt-6 max-w-2xl leading-relaxed">
           Your gateway to hackathons, workshops, and tech competitions. Connect
           with opportunities, build amazing projects, and advance your career.
         </p>
 
-        {/* Buttons */}
         <div className="mt-10 flex gap-4 flex-wrap justify-center">
           <button
             onClick={handleUserEvents}
@@ -128,7 +120,6 @@ const Home = () => {
           </button>
         </div>
 
-        {/* Stats Section */}
         <div
           className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-24 text-center
           bg-violet-950 backdrop-blur-md px-1 py-8 rounded-2xl border pr-2 border-white/10"

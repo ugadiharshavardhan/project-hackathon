@@ -20,7 +20,7 @@ const EachEventDetails = () => {
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
-        const url = `http://localhost:5678/user/allevents/${eventid}`;
+        const url = `https://project-hackathon-7utw.onrender.com/user/allevents/${eventid}`;
         const options = {
           method: "GET",
           headers: {
@@ -48,7 +48,7 @@ const EachEventDetails = () => {
       if (!eventid || !jwtToken) return;
       
       try {
-        const url = `http://localhost:5678/user/saved/${eventid}`;
+        const url = `https://project-hackathon-7utw.onrender.com/user/saved/${eventid}`;
         const options = {
           method: "GET",
           headers: {
@@ -104,11 +104,10 @@ const EachEventDetails = () => {
     const newSaveState = !isSaved;
     const previousState = isSaved;
     
-    // Optimistic UI update
     setIsSaved(newSaveState);
     
     try {
-      const url = "http://localhost:5678/user/saved";
+      const url = "https://project-hackathon-7utw.onrender.com/user/saved";
       const options = {
         method: "POST",
         headers: {
@@ -127,10 +126,8 @@ const EachEventDetails = () => {
         throw new Error('Failed to update saved status');
       }
       
-      // No need to update state here as we did it optimistically
     } catch (err) {
       console.error("Error updating saved status:", err);
-      // Revert to previous state on error
       setIsSaved(previousState);
     }
   };

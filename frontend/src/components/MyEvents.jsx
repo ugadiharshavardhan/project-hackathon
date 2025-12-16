@@ -15,7 +15,7 @@ function MyEvents({ setForm, dropValue }) {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch("http://localhost:5678/events/my", {
+        const response = await fetch("https://project-hackathon-7utw.onrender.com/events/my", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -45,7 +45,7 @@ function MyEvents({ setForm, dropValue }) {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("http://localhost:5678/projects", {
+        const response = await fetch("https://project-hackathon-7utw.onrender.com/projects", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -79,7 +79,7 @@ function MyEvents({ setForm, dropValue }) {
 
   // Delete Event
   const handleDeleteEachItem = async (id) => {
-    const res = await fetch(`http://localhost:5678/events/${id}`, {
+    const res = await fetch(`https://project-hackathon-7utw.onrender.com/events/${id}`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -96,7 +96,7 @@ function MyEvents({ setForm, dropValue }) {
 
   // Delete Project
   const handleDeleteProject = async (id) => {
-    const res = await fetch(`http://localhost:5678/projects/${id}`, {
+    const res = await fetch(`https://project-hackathon-7utw.onrender.com/projects/${id}`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -186,13 +186,6 @@ function MyEvents({ setForm, dropValue }) {
           <h2 className="text-xl font-semibold">{each.title}</h2>
 
           <div>
-            {/* <button
-              className="hover:text-white text-gray-400 mr-2 cursor-pointer"
-              onClick={() => setForm({ open: true, event: each, id: each._id })}
-            >
-              <FiEdit size={18} />
-            </button> */}
-
             <button onClick={() => handleDeleteProject(each._id)} className="hover:text-white text-gray-400 cursor-pointer">
               <FiTrash2 size={18} />
             </button>

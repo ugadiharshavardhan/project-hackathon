@@ -23,7 +23,7 @@ function AllEventsPage({ searchQuery, eventType, organizer }) {
   useEffect(() => {
     const allEventsData = async () => {
       try {
-        const response = await fetch("http://localhost:5678/events/all", {
+        const response = await fetch("https://project-hackathon-7utw.onrender.com/events/all", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

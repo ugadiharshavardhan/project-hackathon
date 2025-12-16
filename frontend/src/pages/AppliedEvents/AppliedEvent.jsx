@@ -68,7 +68,7 @@ function AppliedEvent() {
         setIsSubmitting(true);
         
         try {
-            const url = `http://localhost:5678/event/apply/${eventid}`;
+            const url = `https://project-hackathon-7utw.onrender.com/event/apply/${eventid}`;
             const options = {
                 method: "POST",
                 credentials: "include",
@@ -117,7 +117,7 @@ function AppliedEvent() {
 
     useEffect(()=>{
         const fetchEvent = async()=> {
-            const url = `http://localhost:5678/user/allevents/${eventid}`
+            const url = `https://project-hackathon-7utw.onrender.com/user/allevents/${eventid}`
             const options = {
                 method:"GET",
                 headers:{

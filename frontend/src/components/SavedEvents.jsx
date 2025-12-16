@@ -15,7 +15,7 @@ function SavedEvents() {
       try {
         setLoading(true);
 
-        const url = "http://localhost:5678/user/savedevents";
+        const url = "https://project-hackathon-7utw.onrender.com/user/savedevents";
         const options = {
           method: "GET",
           headers: {

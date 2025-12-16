@@ -50,8 +50,8 @@ const Form = ({ event }) => {
 
     const isUpdating = !!event;
     const url = isUpdating
-      ? `http://localhost:5678/events/${id}`
-      : "http://localhost:5678/events/post";
+      ? `https://project-hackathon-7utw.onrender.com/events/${id}`
+      : "https://project-hackathon-7utw.onrender.com/events/post";
     
     console.log(url)
       
