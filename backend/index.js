@@ -24,5 +24,6 @@ app.use("/", publicRoutes);
 
 // Start server
 connection().then(() => {
-  app.listen(5678, () => console.log("Server running at port 5678"));
+  const port = process.env.PORT || 5678;
+  app.listen(port, () => console.log(`Server running at port ${port}`));
 });
