@@ -167,6 +167,28 @@ app.put("/events/:id", verifyAdmin, async (req, res) => {
   }
 });
 
+// app.put("/projects/:id", verifyAdmin, async (req, res) => {
+//   try {
+//     const updatedProject = await projectModel.findOneAndUpdate(
+//       { _id: req.params.id, createdBy: req.adminId },
+//       req.body,
+//       { new: true }
+//     );
+
+//     if (!updatedProject) {
+//       return res.status(404).json({ message: "Project not found" });
+//     }
+
+//     res.status(200).json({
+//       message: "Project updated successfully",
+//       project: updatedProject
+//     });
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// });
+
+
 // DELETE EVENT
 app.delete("/events/:id", verifyAdmin, async (req, res) => {
   try {

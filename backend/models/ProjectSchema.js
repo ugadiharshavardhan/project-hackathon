@@ -33,7 +33,7 @@ const projectSchema = new mongoose.Schema({
   },
   functionality : {
     type:String,
-    required:true
+    required:false
   },
   createdBy: {
     type: Schema.Types.ObjectId,

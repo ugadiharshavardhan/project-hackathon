@@ -93,9 +93,8 @@ function AllEventsPage({ searchQuery, eventType, organizer }) {
   };
 
   return (
-    <div className="bg-black min-h-screen w-full">
+    <div className="bg-[#020617] min-h-screen w-full ">
 
-      {/* 🔹 LOADING ONLY */}
       {loading ? (
         <div className="flex items-center justify-center min-h-screen">
           <ThreeDot color="#32cd32" size="medium" text="" textColor="" />
@@ -110,7 +109,7 @@ function AllEventsPage({ searchQuery, eventType, organizer }) {
             filteredEvents.map((each, _id) => (
               <div
                 key={_id}
-                className="bg-[#111111] text-white rounded-xl p-5 border border-gray-800 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                className="bg-[#111111] text-white rounded-xl p-5 border border-gray-800 transition-all duration-300 hover:-translate-y-2 hover:shadow-white-900"
               >
                 <div className="flex items-center gap-2 mb-3">
                   {each.Organizer === "College" ? (

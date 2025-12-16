@@ -4,17 +4,19 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 
 
+
 function CreateProjectAdmin() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
-    EventType:"Projects",
+    EventType: "Projects",
     title: "",
     level: "",
     description: "",
     stack: [],
-    gitUrl: "",
-    figmaUrl: "",
+    githublink: "",
+    figmaLink: ""
   });
+
 
   const handleChange = (e) => {
     setFormData({
@@ -40,12 +42,16 @@ function CreateProjectAdmin() {
         body: JSON.stringify(formData)
     }
     try {
-      const res = await fetch(url,options);
-
+      const res = await fetch(url, options);
       const data = await res.json();
-      console.log(data)
-      toast.success("Project created Succesfully")
-      navigate("/admin/dashboard",{replace:true}) 
+
+      if (!res.ok) {
+        toast.error(data.message || "Project creation failed");
+        return;
+      }
+
+      toast.success("Project created successfully");
+      navigate("/admin/dashboard", { replace: true });
     } catch (error) {
       console.error("Error:", error);
       toast.error("Invalid Error")
@@ -78,7 +84,7 @@ function CreateProjectAdmin() {
               value={formData.EventType}
               placeholder="Enter Event Type"
               readOnly
-              onFocus={(e) => e.target.blur()}   // prevents focus
+              onFocus={(e) => e.target.blur()}   
               className="w-full border border-gray-300 p-3 rounded-lg bg-gray-100 cursor-not-allowed"
               required
             />
@@ -158,8 +164,8 @@ function CreateProjectAdmin() {
               </label>
               <input
                 type="url"
-                name="gitUrl"
-                value={formData.gitUrl}
+                name="githublink"
+                value={formData.githublink}
                 onChange={handleChange}
                 placeholder="https://github.com/username/project"
                 className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -174,8 +180,8 @@ function CreateProjectAdmin() {
               </label>
               <input
                 type="url"
-                name="figmaUrl"
-                value={formData.figmaUrl}
+                name="figmaLink"
+                value={formData.figmaLink}
                 onChange={handleChange}
                 placeholder="https://www.figma.com/file/..."
                 className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"

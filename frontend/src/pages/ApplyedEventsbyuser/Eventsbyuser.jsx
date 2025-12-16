@@ -64,27 +64,20 @@ function Eventsbyuser() {
         );
     }
 
-    const handleNavigatetoHome = () => {
-        navigate("/user/allevents",{replace:true})
-    }
-
-
     const handleViewDetails = (eventid) => {
         navigate(`/user/allevents/${eventid}`,{replace:true})
     }
     
     return (
-        <div className='bg-gray-800 min-h-screen'>
+        <div className=' min-h-screen'>
             <ul className='pt-15'>
-                <button onClick={handleNavigatetoHome} className='text-white mt-8 p-2 rounded-xl font-semibold cursor-pointer '>
-                    <div className='flex '>
-                        <FaAngleLeft className='mt-1.5' /> 
-                        <span >Back</span>
-                    </div></button>
+                <h1 className="text-4xl text-center font-bold mb-5 text-white">
+                    <span className="text-blue-400">Applied</span> Events
+                </h1>
                 <div className='grid grid-cols-3 gap-3'>
                      {appliedData.map((each, id) => (
                         <li key={id} className="m-2 w-full transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-                            <div className="bg-gray-900 text-white p-6 rounded-xl shadow-md w-full max-w-xl mx-auto">
+                            <div className="bg-gray-200 text-black p-6 rounded-xl shadow-md w-full max-w-xl mx-auto">
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-2">
                                         <span className="bg-yellow-600 font-bold text-white text-xs px-2 py-0.5 rounded-full">

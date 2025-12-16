@@ -1,5 +1,3 @@
-// import Cookies from "js-cookie"
-// import { FaSignInAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router'
 import { FaHome } from "react-icons/fa";
 import { FaAngleDoubleRight } from "react-icons/fa";
@@ -10,18 +8,13 @@ import { FaEye } from "react-icons/fa";
 function UserNavbar() {
     const navigate = useNavigate()
 
-    // const handleLogout = () => {
-    //     Cookies.remove("jwt_token")
-    //     navigate("/signin",{replace:true})
-    // }
-
     const handleRefresh = () => {
       navigate("/",{replace:true})
     }
 
-    const handleAppliedEventsByUser = () => {
-      navigate("/user/appliedevents",{replace:true})
-    }
+    // const handleAppliedEventsByUser = () => {
+    //   navigate("/user/appliedevents",{replace:true})
+    // }
 
     const handleUserAccount = () => {
       navigate("/user/account",{replace:true})
@@ -49,15 +42,9 @@ function UserNavbar() {
           <li className="flex items-center gap-1 cursor-pointer hover:text-purple-500" onClick={handleProjects}>
             Projects<span className="mt-1"><FaEye /></span>
           </li>
-          <li className="flex items-center gap-1 cursor-pointer hover:text-purple-500" onClick={handleAppliedEventsByUser}>
-            Applied  Events <span className="mt-1"><FaAngleDoubleRight /></span>
-          </li>
           <li className="flex items-center gap-1 cursor-pointer hover:text-purple-500" onClick={handleUserAccount}>
             <span className="mt-1"><FaRegUser /></span>
           </li>
-          {/* <li onClick={handleLogout} className="flex items-center gap-1 cursor-pointer hover:text-purple-500">
-            <FaSignInAlt /> Logout
-          </li> */}
         </ul>
       </nav>
     </div>

@@ -30,6 +30,7 @@ function MyEvents({ setForm, dropValue }) {
           setMyEventsdata([]);
           return;
         }
+        console.log(data)
 
         setMyEventsdata(data.events || []);
       } catch (error) {
@@ -61,6 +62,7 @@ function MyEvents({ setForm, dropValue }) {
         }
 
         setProjectData(data.events || []);
+        console.log(data)
       } catch (error) {
         console.error("Fetch error:", error);
         setProjectData([]);
@@ -124,7 +126,7 @@ function MyEvents({ setForm, dropValue }) {
       <div className="bg-gray-900 text-white p-6 rounded-xl shadow-md w-full max-w-xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-semibold">{each.EventTitle}</h2>
+            <h2 className="text-xl font-semibold">{each.EventTitle.toUpperCase()}</h2>
             <span className="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">{each.Organizer}</span>
             <span className="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full">{each.EventType}</span>
           </div>
@@ -183,9 +185,18 @@ function MyEvents({ setForm, dropValue }) {
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-xl font-semibold">{each.title}</h2>
 
-          <button onClick={() => handleDeleteProject(each._id)} className="hover:text-white cursor-pointer">
-            <FiTrash2 size={18} />
-          </button>
+          <div>
+            {/* <button
+              className="hover:text-white text-gray-400 mr-2 cursor-pointer"
+              onClick={() => setForm({ open: true, event: each, id: each._id })}
+            >
+              <FiEdit size={18} />
+            </button> */}
+
+            <button onClick={() => handleDeleteProject(each._id)} className="hover:text-white text-gray-400 cursor-pointer">
+              <FiTrash2 size={18} />
+            </button>
+          </div>
         </div>
 
         <p className="text-gray-400 text-sm mb-4">{each.description}</p>

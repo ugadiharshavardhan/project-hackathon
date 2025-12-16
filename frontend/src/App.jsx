@@ -1,7 +1,6 @@
 import "./App.css";
 import SignUp from "./pages/signup/SignUp";
 import SignIn from "./pages/signin/SignIn";
-// import UserPage from "./pages/UserPage/UserPage";
 import AdminLogin from "./pages/AdminLogin/AdminLogin";
 import CreateProjectAdmin from "./components/CreateProjectAdmin";
 import AdminDashboard from "./pages/AdminPage/AdminDashboard";
@@ -14,7 +13,6 @@ import DisplayAllEvents from "./pages/UserTotalEvents/DisplayAllEvents";
 import ProtectedRoute from "./components/ProtectedRoute";
 import EachEventDetails from "./components/EachEventDetails";
 import AppliedEvent from "./pages/AppliedEvents/AppliedEvent";
-import Eventsbyuser from "./pages/ApplyedEventsbyuser/Eventsbyuser";
 import UserAccount from "./pages/Account/UserAccount";
 import ProjectsPage from "./components/ProjectPage";
 import { Toaster } from "react-hot-toast";
@@ -38,7 +36,7 @@ function App() {
             <Route path="/user/allevents" element={<ProtectedRoute><DisplayAllEvents /></ProtectedRoute>} />
             <Route path="/user/allevents/:eventid" element={<ProtectedRoute><EachEventDetails /></ProtectedRoute>} />
             <Route path="/events/apply/:eventid" element={<ProtectedRoute><AppliedEvent /></ProtectedRoute>} />
-            <Route path="/user/appliedevents" element={<ProtectedRoute><Eventsbyuser /></ProtectedRoute>} />
+            {/* <Route path="/user/appliedevents" element={<ProtectedRoute><Eventsbyuser /></ProtectedRoute>} /> */}
             <Route path="/user/account" element={<ProtectedRoute><UserAccount /></ProtectedRoute>} />
             <Route path="/projects/:id" element={<ProtectedRoute><EachProject /></ProtectedRoute>} />
             <Route path="/createproject" element={<CreateProjectAdmin />} />
