@@ -220,7 +220,7 @@ function AdminLogin() {
         {/* Left Image */}
         <div className="hidden md:block">
           <img
-            src="https://res.cloudinary.com/dcttatiuj/image/upload/v1765259528/Screenshot_2025-12-09_112125_ya4frq.png"
+            src="https://res.cloudinary.com/dcttatiuj/image/upload/v1766123227/ChatGPT_Image_Dec_19_2025_11_16_31_AM_krsl6b.png"
             alt="admin"
             className="h-[500px] w-[360px] object-cover brightness-90"
           />

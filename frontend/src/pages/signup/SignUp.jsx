@@ -179,7 +179,7 @@ export default function SignUp() {
         <div className="hidden md:block">
           <img
             className="h-full w-[420px] object-cover"
-            src="https://res.cloudinary.com/dcttatiuj/image/upload/v1764924849/Screenshot_2025-12-05_142313_e2uc0p.png"
+            src="https://res.cloudinary.com/dcttatiuj/image/upload/v1766122761/ChatGPT_Image_Dec_19_2025_11_08_15_AM_cupynb.png"
             alt="Signup Visual"
           />
         </div>
