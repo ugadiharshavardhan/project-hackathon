@@ -18,7 +18,7 @@ function UserAccount() {
   useEffect(() => {
     const fetchAccount = async () => {
       const response = await fetch(
-        "http://localhost:5678/user/account",
+        "https://project-hackathon-7utw.onrender.com/user/account",
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("jwt_token")}`,
