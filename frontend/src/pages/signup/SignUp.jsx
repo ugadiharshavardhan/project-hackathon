@@ -14,14 +14,50 @@ export default function SignUp() {
   const [showErrorMsg, setShowErrMsg] = useState("");
   const [isErr, setIsErr] = useState(false);
 
-  const handleUsername = (e) => setUserName(e.target.value);
-  const handleEmail = (e) => setEmail(e.target.value);
-  const handlePassword = (e) => setPassword(e.target.value);
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const handleUsername = (e) => {
+    const value = e.target.value;
+    setUserName(value);
+    if (value.length > 0 && (value.length < 4 || value.length > 20)) {
+      setUsernameError("Username must be 4-15 characters");
+    } else {
+      setUsernameError("");
+    }
+  };
+
+  const handleEmail = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (value.length > 0 && !emailRegex.test(value)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handlePassword = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    if (value.length > 0 && (value.length < 6 || value.length > 15)) {
+      setPasswordError("Password must be 6-15 characters");
+    } else {
+      setPasswordError("");
+    }
+  };
 
 
   const jwtToken = Cookies.get("jwt_token");
 
   const onSubmitSuccess = () => {
+    setIsErr(false);
+    setShowErrMsg("");
+    setUsernameError("");
+    setEmailError("");
+    setPasswordError("");
     navigate("/signin", { replace: true });
     toast.success("Account Created", { duration: 2000 });
   };
@@ -29,11 +65,30 @@ export default function SignUp() {
   const onSubmitFailure = (error) => {
     setIsErr(true);
     setShowErrMsg(error);
-    toast.error("Invalid Credentials", { duration: 2000 });
   };
 
   const handleSubmitForm = async (event) => {
     event.preventDefault();
+
+    // Client-side validation
+    if (username.length < 4 || username.length > 15) {
+      setIsErr(true);
+      setShowErrMsg("Username must be between 4 and 15 characters");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setIsErr(true);
+      setShowErrMsg("Please enter a valid email address");
+      return;
+    }
+
+    if (password.length < 6 || password.length > 15) {
+      setIsErr(true);
+      setShowErrMsg("Password must be between 6 and 15 characters");
+      return;
+    }
 
     const userDetails = { username, email, password };
 
@@ -118,6 +173,9 @@ export default function SignUp() {
                   className="w-full px-3 py-2 rounded-md bg-[#0f1225] text-gray-200 text-sm outline-none"
                 />
               </div>
+              {usernameError && (
+                <p className="text-rose-400 text-xs mt-1">{usernameError}</p>
+              )}
             </div>
 
             <div>
@@ -134,6 +192,9 @@ export default function SignUp() {
                   className="w-full px-3 py-2 rounded-md bg-[#0f1225] text-gray-200 text-sm outline-none"
                 />
               </div>
+              {emailError && (
+                <p className="text-rose-400 text-xs mt-1">{emailError}</p>
+              )}
             </div>
 
 
@@ -150,6 +211,9 @@ export default function SignUp() {
                   className="w-full px-3 py-2 rounded-md bg-[#0f1225] text-gray-200 text-sm outline-none"
                 />
               </div>
+              {passwordError && (
+                <p className="text-rose-400 text-xs mt-1">{passwordError}</p>
+              )}
             </div>
 
 
