@@ -42,7 +42,7 @@ function SavedEvents() {
   const Data = events.map((each) => each.eventid).filter((event) => event !== null);
   console.log(Data)
   return (
-    <div className="pt-10 w-full">
+    <div className="pt-10 w-full min-h-screen bg-gradient-to-br from-[#0f1225] to-[#14172e]">
       {loading ? (
         /* LOADER */
         <div className="flex min-h-screen justify-center items-center">

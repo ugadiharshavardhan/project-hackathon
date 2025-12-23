@@ -12,5 +12,5 @@ const adminSchemaFormat = {
     }
 }
 
-const AdminSchema = new Schema(adminSchemaFormat)
+const AdminSchema = new Schema(adminSchemaFormat, { timestamps: true })
 export const AdminModel = model("admindetails",AdminSchema)

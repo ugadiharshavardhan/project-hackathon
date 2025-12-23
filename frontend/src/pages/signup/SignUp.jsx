@@ -23,11 +23,13 @@ export default function SignUp() {
 
   const onSubmitSuccess = () => {
     navigate("/signin", { replace: true });
+    toast.success("Account Created", { duration: 2000 });
   };
 
   const onSubmitFailure = (error) => {
     setIsErr(true);
     setShowErrMsg(error);
+    toast.error("Invalid Credentials", { duration: 2000 });
   };
 
   const handleSubmitForm = async (event) => {
@@ -78,10 +80,10 @@ export default function SignUp() {
       <div className="absolute inset-0 bg-black/30"></div>
 
       {/* Header */}
-      <header className="absolute top-6 left-6 z-20">
+      <header onClick={handleHome} className="absolute cursor-pointer top-6 left-6 z-20">
         <div className="flex items-center gap-2">
           <FaCode size={34} className="text-indigo-400" />
-          <h1 className="text-3xl font-bold text-white">HackNext</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-white">HackNext</h1>
         </div>
         <button
           onClick={handleHome}
@@ -92,10 +94,10 @@ export default function SignUp() {
       </header>
 
       {/* Card Wrapper */}
-      <div className="relative z-10 flex shadow-2xl rounded-2xl overflow-hidden">
+      <div className="relative z-10 flex shadow-2xl rounded-2xl overflow-hidden flex-col md:flex-row">
         {/* Form Card */}
-        <div className="bg-white/5 backdrop-blur-md p-8 w-[360px] border border-white/10">
-          <h1 className="text-2xl font-bold text-center text-white mb-6">
+        <div className="bg-white/5 backdrop-blur-md p-6 md:p-8 w-full max-w-[360px] border border-white/10">
+          <h1 className="text-xl md:text-2xl font-bold text-center text-white mb-6">
             Create Account
           </h1>
 
@@ -111,6 +113,7 @@ export default function SignUp() {
               <div className="mt-1 p-[1.5px] rounded-lg bg-white/10 focus-within:bg-gradient-to-r focus-within:from-indigo-500 focus-within:to-violet-600 transition">
                 <input
                   type="text"
+                  name="username"
                   placeholder="Enter full name"
                   value={username}
                   onChange={handleUsername}
@@ -127,6 +130,7 @@ export default function SignUp() {
               <div className="mt-1 p-[1.5px] rounded-lg bg-white/10 focus-within:bg-gradient-to-r focus-within:from-indigo-500 focus-within:to-violet-600 transition">
                 <input
                   type="email"
+                  name="email"
                   placeholder="Enter email"
                   value={email}
                   onChange={handleEmail}
@@ -161,7 +165,7 @@ export default function SignUp() {
             {/* Submit */}
             <button
               type="submit"
-              className="mt-2 py-3 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-semibold transition"
+              className="mt-2 py-3 cursor-pointer rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-semibold transition"
             >
               Create Account
             </button>
@@ -178,7 +182,7 @@ export default function SignUp() {
         {/* Image */}
         <div className="hidden md:block">
           <img
-            className="h-full w-[420px] object-cover"
+            className="h-full w-full md:w-[420px] object-cover"
             src="https://res.cloudinary.com/dcttatiuj/image/upload/v1766122761/ChatGPT_Image_Dec_19_2025_11_08_15_AM_cupynb.png"
             alt="Signup Visual"
           />

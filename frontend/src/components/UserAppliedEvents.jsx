@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { ThreeDot } from "react-loading-indicators";
 import { FaCalendarAlt, FaMapMarkerAlt, FaUser, FaClock } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
+import AdminNavbar from "./AdminNavbar";
 
 function UserAppliedEvents() {
   const navigate = useNavigate();
@@ -83,26 +84,22 @@ function UserAppliedEvents() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f1225] to-[#14172e] text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <button
-            onClick={handleBackBtn}
-            className="p-2 cursor-pointer rounded-full border relative -left-170 top-10 border-white/20 hover:border-white/40 transition"
-          >
-            <FaArrowLeft />
-          </button>
-          <h1 className="text-4xl font-bold mb-4">
-            <span className="text-indigo-400">User Applied</span> Events
-          </h1>
-          <p className="text-gray-400 text-lg">
-            View all applications for events you created
-          </p>
-          <p className="text-gray-500 mt-2">
-            Total Applications: {applications.length}
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#0f1225] to-[#14172e] text-white">
+      <AdminNavbar />
+      <div className="pt-20 p-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-4">
+              <span className="text-indigo-400">User Applied</span> Events
+            </h1>
+            <p className="text-gray-400 text-lg">
+              View all applications for events you created
+            </p>
+            <p className="text-gray-500 mt-2">
+              Total Applications: {applications.length}
+            </p>
+          </div>
 
         {applications.length === 0 ? (
           /* Empty State */
@@ -187,6 +184,7 @@ function UserAppliedEvents() {
             ))}
           </div>
         )}
+        </div>
       </div>
     </div>
   );

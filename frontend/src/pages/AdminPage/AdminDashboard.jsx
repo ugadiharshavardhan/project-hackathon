@@ -1,17 +1,75 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Navigate, useNavigate } from "react-router";
 import Form from "../../components/Form";
 import MyEvents from "../../components/MyEvents";
 import AdminOverView from "../../components/AdminOverView";
 import { FormContext } from "../../contextApi/FormContext";
-import { FaSignInAlt } from "react-icons/fa";
-import { FaRegUser } from "react-icons/fa";
+import { FaSignInAlt, FaBars, FaTimes, FaUser, FaClipboardList } from "react-icons/fa";
+import { ThreeDot } from "react-loading-indicators";
+import AdminNavbar from "../../components/AdminNavbar";
+
+const AdminProfile = () => {
+  const [adminData, setAdminData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAdminProfile = async () => {
+      try {
+        const response = await fetch(
+          "https://project-hackathon-7utw.onrender.com/admin/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("admin_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setAdminData(data.admin);
+      } catch (error) {
+        console.error("Error fetching admin profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAdminProfile();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-40">
+        <ThreeDot color="#ffffff" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-gray-900 p-6 rounded-xl">
+      <h2 className="text-xl md:text-2xl font-bold mb-4">Admin Profile</h2>
+      {adminData ? (
+        <div className="space-y-4">
+          <div className="flex justify-between">
+            <span className="text-gray-400">Email:</span>
+            <span className="text-white">{adminData.email}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">Name:</span>
+            <span className="text-white">{adminData.name || 'N/A'}</span>
+          </div>
+          {/* Add more fields as needed */}
+        </div>
+      ) : (
+        <p className="text-gray-400">Unable to load profile data.</p>
+      )}
+    </div>
+  );
+};
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const { form, setForm } = useContext(FormContext);
   const [drodownValue,setDropDownValue] = useState('All Events')
+  const [activeSection, setActiveSection] = useState('overview');
 
   const adminToken = Cookies.get("admin_token");
   if (!adminToken) {
@@ -35,62 +93,48 @@ const AdminDashboard = () => {
     navigate("/createproject",{replace:true})
   }
 
-
-  const handleuserappliedevents = () => {
-    navigate("/userappliedevents",{replace:true})
-  }
-
-  // const handleAdminAccount = () => {
-  //   navigate("/adminaccount",{replace:true})
-  // }
-
   return (
-    <div className="min-h-screen bg-black text-white px-10 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 onClick={handleHome} className="text-2xl cursor-pointer font-bold">
-          Admin <span className="text-blue-500">Dashboard</span>
-        </h1>
-        <div className="flex">
-          <h1 onClick={handleuserappliedevents} className="text-lg pt-5 pr-5 cursor-pointer font-bold">
-            User Applied Events
-          </h1>
-          <button
-            onClick={handleLogout}
-            className="m-4 flex items-center justify-center gap-2 p-2 rounded-xl
-                        bg-rose-500/60 text-white cursor-pointer
-                        hover:bg-rose-500 transition"
-          >
-            <FaSignInAlt />
-            Logout
-          </button>
-        </div>  
-      </div>
+    <div className="min-h-screen bg-black text-white px-4 md:px-10 py-8">
+      <AdminNavbar />
+      <div className="pt-20">
 
-      {!form.open && <AdminOverView />}
+      {!form.open && activeSection === 'overview' && <AdminOverView />}
 
-      <div className="flex gap-4 mb-4">
+      {!form.open && activeSection === 'profile' && (
         <div>
           <button
+            onClick={() => setActiveSection('overview')}
+            className="mb-4 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+          >
+            Back to Overview
+          </button>
+          <AdminProfile />
+        </div>
+      )}
+
+      <div className="flex flex-col md:flex-row gap-4 mb-4">
+        <div className="flex flex-wrap gap-2">
+          <button
             onClick={() => setForm({ open: false, event: null })}
-            className="px-6 py-2 bg-purple-600 rounded-lg shadow hover:bg-purple-700 transition m-1"
+            className="px-4 py-2 md:px-6 md:py-2 bg-purple-600 rounded-lg shadow hover:bg-purple-700 transition"
           >
             My Events
           </button>
           <button
             onClick={() => setForm({ open: true, event: null })}
-            className="px-6 py-2 bg-gray-800 rounded-lg shadow hover:bg-gray-700 transition m-1"
+            className="px-4 py-2 md:px-6 md:py-2 bg-gray-800 rounded-lg shadow hover:bg-gray-700 transition"
           >
             + Create Event
           </button>
           <button
             onClick={handleCreateProject}
-            className="px-6 py-2 bg-gray-800 rounded-lg shadow hover:bg-gray-700 transition m-1"
+            className="px-4 py-2 md:px-6 md:py-2 bg-gray-800 rounded-lg shadow hover:bg-gray-700 transition"
           >
             + Create Project
           </button>
         </div>
-        <div className="m-1">
-          <select className="bg-gray-700 p-2 rounded-xl" value={drodownValue} onChange={(e)=>handleDropValue(e)} >
+        <div>
+          <select className="bg-gray-700 p-2 rounded-xl text-sm md:text-base" value={drodownValue} onChange={(e)=>handleDropValue(e)} >
             <option value={"All Events"} >All Events</option>
             <option value={"Hackathon"}>Hackathon</option>
             <option value={"Workshop"}>Workshop</option>
@@ -105,6 +149,7 @@ const AdminDashboard = () => {
       ) : (
         <MyEvents dropValue={drodownValue} setForm={setForm} />
       )}
+      </div>
     </div>
   );
 };

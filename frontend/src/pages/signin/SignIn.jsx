@@ -75,15 +75,15 @@ const SignIn = () => {
       </div>
 
       {/* Logo */}
-      <header className="absolute top-6 left-10 z-20 flex items-center gap-2">
+      <header onClick={handleHome} className="absolute  cursor-pointer top-6 left-10 z-20 flex items-center gap-2">
         <FaCode size={34} className="text-indigo-400" />
-        <h1 className="text-3xl font-bold text-white tracking-wide">
+        <h1 className="text-2xl md:text-3xl font-bold text-white tracking-wide">
           HackNext
         </h1>
       </header>
 
       {/* CARD */}
-      <div className="relative z-10 flex h-[470px] w-[760px] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md">
+      <div className="relative z-10 flex h-auto md:h-[470px] w-full max-w-[760px] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md">
 
         {/* IMAGE */}
         <div className="relative w-1/2 hidden md:block">
@@ -104,8 +104,8 @@ const SignIn = () => {
         </div>
 
         {/* FORM */}
-        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center text-white">
-          <h1 className="text-3xl font-bold text-center mb-2">
+        <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center text-white">
+          <h1 className="text-2xl md:text-3xl font-bold text-center mb-2">
             Student Login
           </h1>
 
@@ -124,6 +124,7 @@ const SignIn = () => {
                   type="text"
                   placeholder="Enter Email"
                   value={email}
+                  name="email"
                   onChange={handleEmail}
                   className="w-full px-3 py-2 rounded-md bg-[#0f1225] text-gray-200 text-sm outline-none"
                 />
@@ -156,7 +157,7 @@ const SignIn = () => {
             {/* Submit */}
             <button
               type="submit"
-              className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 text-white font-semibold py-3 rounded-xl transition"
+              className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 text-white font-semibold py-3 rounded-xl transition cursor-pointer"
             >
               Login
             </button>

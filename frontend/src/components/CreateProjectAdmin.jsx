@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Cookies from "js-cookie"
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import AdminNavbar from "./AdminNavbar";
 
 
 function CreateProjectAdmin() {
@@ -62,8 +63,9 @@ function CreateProjectAdmin() {
   }
 
   return (
-    <div className="bg-blue-950 p-10">
-      <button onClick={handleAdminDashboard} className="text-white cursor-pointer font-bold bg-black pr-2 pt-1 pb-1 pl-2 rounded-xl">{"<"} back</button>
+    <div className="bg-blue-950 min-h-screen">
+      <AdminNavbar />
+      <div className="pt-20 p-10">
         <div className="max-w-2xl bg-blue mx-auto bg-white p-8 shadow-xl rounded-xl">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
             Add New Project
@@ -196,6 +198,7 @@ function CreateProjectAdmin() {
             </button>
           </form>
         </div>
+      </div>
     </div>
   );
 }

@@ -52,14 +52,14 @@ const Home = () => {
   return (
     <div className="w-full min-h-screen bg-[#070b1e] text-white overflow-hidden">
       {/* HERO SECTION */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-6 relative">
-        <h1 className="absolute top-6 left-10 text-3xl font-bold">&lt;/&gt;</h1>
+      <section className="min-h-screen flex flex-col items-center justify-center px-6 relative pt-20 md:pt-0">
+        <h1 className="absolute top-6 left-10 text-2xl md:text-3xl font-bold">&lt;/&gt;</h1>
 
 
         <button
           onClick={handleUserEvents}
           className="
-            absolute top-7 right-40
+            absolute top-7 right-40 hidden md:block
             cursor-pointer font-bold text-sm text-gray-300
             transition-all duration-200 ease-out
             hover:scale-115 hover:text-white
@@ -73,7 +73,7 @@ const Home = () => {
         <button
           onClick={handleUserEvent}
           className="
-            absolute top-6 right-10
+            absolute top-6 right-10 hidden md:block
             cursor-pointer font-bold text-sm
             border-2 border-white rounded-xl px-3 py-1
             transition-all duration-200 ease-out
@@ -93,9 +93,9 @@ const Home = () => {
 
         <h1
           className="
-            text-6xl font-bold mt-10
+            text-3xl md:text-5xl font-bold mt-10
             transition-all duration-300 ease-out
-
+    
             text-white
             hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600
             hover:bg-clip-text hover:text-transparent
@@ -109,15 +109,15 @@ const Home = () => {
         </h1>
 
 
-        <p className="text-gray-300 text-lg max-w-2xl text-center mt-6">
+        <p className="text-gray-300 text-base md:text-lg max-w-2xl text-center mt-6">
           Your gateway to hackathons, workshops, and tech competitions. Discover
           opportunities, collaborate, and grow your career.
         </p>
 
-        <div className="mt-10 flex gap-4">
+        <div className="mt-10 flex flex-col sm:flex-row gap-4">
           <button
             onClick={handleUserEvents}
-            className="px-7 py-3 transition-all duration-200 ease-out
+            className="px-5 sm:px-7 py-3 transition-all duration-200 ease-out
             hover:scale-115 cursor-pointer bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold"
           >
             Explore Events →
@@ -125,7 +125,7 @@ const Home = () => {
 
           <button
             onClick={handleAdminEvents}
-            className="px-7 py-3 cursor-pointer bg-black/40 border border-white/10 rounded-lg"
+            className="px-5 sm:px-7 py-3 cursor-pointer bg-black/40 border border-white/10 rounded-lg"
           >
             Admin Community
           </button>
@@ -142,11 +142,11 @@ const Home = () => {
 
       {/* FEATURES SECTION */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-14">
+        <h2 className="text-2xl md:text-4xl md:text-center font-bold text-center mb-14">
           What You Can Do on HackNext
         </h2>
 
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <Feature
             icon={<FaCalendarAlt />}
             title="Find Events"
@@ -172,11 +172,11 @@ const Home = () => {
 
       {/* HOW IT WORKS */}
       <section className="py-24 bg-[#0b102a] px-6">
-        <h2 className="text-4xl font-bold text-center mb-14">
+        <h2 className="text-2xl md:text-4xl font-bold text-center mb-14">
           How HackNext Works
         </h2>
 
-        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-10 text-center">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
           <Step number="01" title="Create Account" />
           <Step number="02" title="Explore Events" />
           <Step number="03" title="Participate & Win" />
@@ -185,7 +185,7 @@ const Home = () => {
 
       {/* CTA */}
       <section className="py-24 text-center px-6">
-        <h2 className="text-4xl font-bold mb-6">
+        <h2 className="text-2xl md:text-4xl font-bold mb-6">
           Ready to Start Your Tech Journey?
         </h2>
         <p className="text-gray-300 mb-10">
@@ -206,15 +206,15 @@ const Home = () => {
 
 const Stat = ({ title, value }) => (
   <div className="text-center">
-    <div className="text-3xl font-bold">{value}</div>
+    <div className="text-2xl md:text-3xl font-bold">{value}</div>
     <p className="text-gray-400 mt-2">{title}</p>
   </div>
 );
 
 const Feature = ({ icon, title, desc }) => (
-  <div className="bg-[#0f1538] p-6 rounded-xl border border-white/10 hover:scale-105 transition">
+  <div className="bg-[#0f1538] p-6 rounded-xl border border-white/10 hover:scale-105 transition sm:text-center">
     <div className="text-3xl mb-4 text-purple-400">{icon}</div>
-    <h3 className="text-xl font-semibold mb-2">{title}</h3>
+    <h3 className="text-lg md:text-xl font-semibold mb-2">{title}</h3>
     <p className="text-gray-400 text-sm">{desc}</p>
   </div>
 );
@@ -222,7 +222,7 @@ const Feature = ({ icon, title, desc }) => (
 const Step = ({ number, title }) => (
   <div className="bg-[#0f1538] p-8 rounded-xl border border-white/10">
     <div className="text-purple-500 text-2xl font-bold mb-4">{number}</div>
-    <h3 className="text-xl font-semibold">{title}</h3>
+    <h3 className="text-lg md:text-xl font-semibold">{title}</h3>
   </div>
 );
 
