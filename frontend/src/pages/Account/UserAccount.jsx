@@ -31,47 +31,6 @@ function UserAccount() {
     fetchAccount();
   }, []);
 
-//   useEffect(() => {
-//   const fetchAccount = async () => {
-//     try {
-//       const token = Cookies.get("jwt_token");
-//       console.log(token)
-
-//       // 🔐 If no token, redirect
-//       if (!token) {
-//         navigate("/signin", { replace: true });
-//         return;
-//       }
-
-//       const response = await fetch(
-//         "http://localhost:5678/user/account",
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-
-//       // // 🔥 Handle 401 properly
-//       // if (response.status === 401) {
-//       //   Cookies.remove("jwt_token");
-//       //   navigate("/signin", { replace: true });
-//       //   return;
-//       // }
-
-//       const data = await response.json();
-//       setUserData(data.userDetails);
-//     } catch (error) {
-//       console.error("Account fetch error:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   fetchAccount();
-// }, [navigate]);
-
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-gradient-to-br from-[#0f1225] to-[#14172e]">
