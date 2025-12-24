@@ -174,6 +174,7 @@ function AllEventsPage({ searchQuery, eventType, organizer }) {
                   <span className="bg-indigo-500/20 text-indigo-400 text-xs px-3 py-1 rounded-full">
                     {each.EventType}
                   </span>
+                  <span className="px-2 text-xs rounded-full bg-green-500/50 text-white border border-purple-500/30">verified</span>
                 </div>
 
                 <h2 className="text-lg font-bold mb-2 bg-gradient-to-r from-blue-400 to-violet-500 bg-clip-text text-transparent">

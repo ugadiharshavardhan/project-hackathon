@@ -12,9 +12,6 @@ function UserAccount() {
   const [activeSection, setActiveSection] = useState("user");
   const [loading, setLoading] = useState(true);
 
-  console.log("hwello")
-  console.log(Cookies.get("jwt_token"))
-
   useEffect(() => {
     const fetchAccount = async () => {
       const response = await fetch(

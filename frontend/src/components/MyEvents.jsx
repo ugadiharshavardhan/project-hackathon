@@ -155,7 +155,7 @@ function MyEvents({ setForm, dropValue }) {
         <div className="flex justify-between items-start gap-4">
           <div>
             <h2 className="text-2xl font-bold text-white">
-              {each.EventTitle}
+              {each.EventTitle} <span className="px-2 text-xs rounded-full bg-green-500/50 text-white border border-purple-500/30">verified</span>
             </h2>
 
             <div className="flex gap-2 mt-2 flex-wrap">
